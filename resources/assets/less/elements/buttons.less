@@ -1,0 +1,27 @@
+@import '../AdminLTE/variables';
+
+.btn-fab {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  color: #fff;
+  transition: .25s all linear;
+  border: none;
+  outline: none;
+  .fa {
+    align-self: center;
+    font-size: 20px;
+    margin: -3px -3px 0 0;
+  }
+  &--red {
+    background-color: @red;
+    &:hover {
+      color: #fff;
+      background-color: lighten(@red, 10%);
+    }
+  }
+}

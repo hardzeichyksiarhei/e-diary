@@ -1,0 +1,49 @@
+/* Flex grid */
+
+.flex-row, .flex-row > div[class*='col-'] {
+    display: flex;
+    flex-wrap: wrap;
+    flex:0 auto;
+    height:auto;
+}
+
+.flex-col {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+}
+
+/* .flex-grow {
+    display: flex;
+    flex: 2;
+} */
+
+/* Common flex style */
+
+.d-flex {
+    display: flex !important;
+}
+
+.flex-direction-column {
+	flex-direction: column !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.justify-content-center {
+	justify-content: center !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end!important;
+}
+
+.flex-grow-1 {
+	flex-grow: 1;
+}

@@ -1,0 +1,43 @@
+.table tbody tr td {
+  vertical-align: middle;
+}
+
+.table tr td:hover {
+  cursor: pointer;
+}
+
+.table.table-no-hover tr td:hover {
+  cursor: default !important;
+}
+
+td.details-control {
+  background: url('../../img/details_open.png') no-repeat center center;
+  cursor: pointer;
+}
+tr.shown td.details-control {
+  background: url('../../img/details_close.png') no-repeat center center;
+}
+
+.table tr td:first-of-type {
+  outline: none;
+  &:hover {
+    cursor: default;
+  }
+}
+
+.subtable {
+  tr td:hover {
+    cursor: default;
+  }
+  td:first-of-type {
+    text-align: right;
+    width: 20%;
+  }
+  td:last-of-type {
+    text-align: left;
+  }
+}
+
+.dt-buttons {
+  display: block;
+}

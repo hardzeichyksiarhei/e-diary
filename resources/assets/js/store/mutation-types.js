@@ -1,0 +1,15 @@
+// auth.js
+export const LOGOUT = 'LOGOUT'
+export const SAVE_TOKEN = 'SAVE_TOKEN'
+export const FETCH_USER = 'FETCH_USER'
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
+export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE'
+export const UPDATE_USER = 'UPDATE_USER'
+export const UPDATE_HAS_PROFILE_USER = 'UPDATE_HAS_PROFILE_USER'
+
+// messages.js
+export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS'
+export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS'
+
+// loading.js
+export const CHANGE_LOADING = 'CHANGE_LOADING'

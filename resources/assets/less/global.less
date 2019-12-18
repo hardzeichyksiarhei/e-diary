@@ -1,0 +1,73 @@
+html, body {
+  font-size: 14px;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.sticky {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	&.mailbox-nav {
+		top: 30px;
+	}
+}
+
+body.top-line-fixed {
+	.sticky {
+		top: 50px;
+		&.mailbox-nav {
+			top: 80px;
+		}
+	}
+}
+
+.custom-checkbox {
+	label {
+		&:hover {
+			&::before {
+				border-color: rgba(0,0,0,.4);
+			}
+		}
+		&::before {
+			background-color: transparent;
+			border: 1px solid rgba(0,0,0,.2);
+			box-shadow: inset 0 90px #fff;
+		}
+	}
+}
+
+.no-padding-rl {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+.block-center {
+	margin: 0 auto;
+}
+
+.text-bold {
+	font-weight: bold !important;
+}
+
+.v-resize {
+    resize: vertical;
+}
+
+.d-block {
+    display: block;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-25 {
+    width: 25%;
+}

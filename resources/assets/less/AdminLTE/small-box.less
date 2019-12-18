@@ -1,0 +1,77 @@
+/*
+ * Component: Small Box
+ * --------------------
+ */
+
+.small-box {
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  .border-radius(2px);
+  margin-bottom: 20px;
+  box-shadow: @box-boxshadow;
+  // content wrapper
+
+  > .small-box-body {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 2;
+    padding: 10px;
+    > .inner {
+      flex: 1;
+    }
+  }
+
+  > .small-box-footer {
+    position: relative;
+    text-align: center;
+    padding: 3px 0;
+    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
+    display: block;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    &:hover {
+      color: #fff;
+      background: rgba(0, 0, 0, 0.15);
+    }
+	}
+	
+	.fa {
+		display: inline-block;
+		margin-right: 5px;
+	}
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    white-space: normal;
+    padding: 0;
+
+  }
+
+  p {
+    font-size: 15px;
+    > small {
+      display: block;
+      color: #f9f9f9;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  // No need for icons on very small devices
+  .small-box {
+    text-align: center;
+    .fa {
+      display: none;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
+}
