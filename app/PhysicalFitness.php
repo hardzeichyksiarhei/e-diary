@@ -19,40 +19,41 @@ class PhysicalFitness extends Model
 	{
 		Carbon::setLocale(config('app.locale'));
 		return Carbon::parse($value)->diffForHumans();
-  }
-  
-  /**
-   * Get calculate by userId
-   * @param  $userId
-   * @return collect DataTable format
-   */
-  public function getCalculate($userId) {
+	}
 
-    $labels = collect([
-      "long_jump" => 'Прыжок в длину с места, см',
-      "long_jump_point" => 'Кол-во баллов',
-      "torso_inclination" => 'Наклон туловища вперед, см',
-      "torso_inclination_point" => 'Кол-во баллов',
-      "run_shuttle" => 'Челночный бег 9 х 4 метров (сек)',
-      "run_shuttle_point" => 'Кол-во баллов',
-      "pull_up" => 'Подтягивание на перекладине, кол-во раз',
-      "pull_up_point" => 'Кол-во баллов',
-      "press" => 'Поднимание туловища из положения лежа на спине за 60 с (раз)',
-      "press_point" => 'Кол-во баллов',
-      "push_up" => 'Сгибание и разгибание рук в упоре лежа, раз',
-      "push_up_point" => 'Кол-во баллов',
-      "run_short" => 'Бег 30 м (сек)',
-      "run_short_point" => 'Кол-во баллов',
-      "run_long" => 'Бег 1500/3000 метров (мин.сек)',
-      "run_long_point" => 'Кол-во баллов',
-      "swimming_s" => 'Плавание 50 метров (время)',
-      "swimming_m" => 'Плавание 50 метров (метры)',
-      "swimming_point" => "Кол-во баллов",
-      "sum_scores" => "Сумма баллов ФП",
-      "assessment" => "Оценка ФП",
-      "level" => 'Уровень ФП',
-      "updated_at" => 'Обновлено'
-    ]);
+	/**
+	 * Get calculate by userId
+	 * @param  $userId
+	 * @return collect DataTable format
+	 */
+	public function getCalculate($userId)
+	{
+
+		$labels = collect([
+			"long_jump" => 'Прыжок в длину с места, см',
+			"long_jump_point" => 'Кол-во баллов',
+			"torso_inclination" => 'Наклон туловища вперед, см',
+			"torso_inclination_point" => 'Кол-во баллов',
+			"run_shuttle" => 'Челночный бег 9 х 4 метров (сек)',
+			"run_shuttle_point" => 'Кол-во баллов',
+			"pull_up" => 'Подтягивание на перекладине, кол-во раз',
+			"pull_up_point" => 'Кол-во баллов',
+			"press" => 'Поднимание туловища из положения лежа на спине за 60 с (раз)',
+			"press_point" => 'Кол-во баллов',
+			"push_up" => 'Сгибание и разгибание рук в упоре лежа, раз',
+			"push_up_point" => 'Кол-во баллов',
+			"run_short" => 'Бег 30 м (сек)',
+			"run_short_point" => 'Кол-во баллов',
+			"run_long" => 'Бег 1500/3000 метров (мин.сек)',
+			"run_long_point" => 'Кол-во баллов',
+			"swimming_s" => 'Плавание 50 метров (время)',
+			"swimming_m" => 'Плавание 50 метров (метры)',
+			"swimming_point" => "Кол-во баллов",
+			"sum_scores" => "Сумма баллов ФП",
+			"assessment" => "Оценка ФП",
+			"level" => 'Уровень ФП',
+			"updated_at" => 'Обновлено'
+		]);
 
 		$user = User::find($userId);
 
@@ -61,19 +62,19 @@ class PhysicalFitness extends Model
 		$exceptFields = ['id', 'user_id', 'created_at'];
 
 		if ($profile->gender === 'woman') {
-      array_push($exceptFields, 'pull_up', 'pull_up_point');
+			array_push($exceptFields, 'pull_up', 'pull_up_point');
 			$labels = $labels->filter(function ($value, $key) {
 				return $key !== 'pull_up' && $key !== 'pull_up_point';
 			});
 		}
-    
+
 		$data = $user->physicalFitnesses()
-				->exclude($exceptFields)
-				->get();
+			->exclude($exceptFields)
+			->get();
 
-    if ($data->count() == 0) return null;
+		if ($data->count() == 0) return null;
 
-    $semesters = [
+		$semesters = [
 			'semester_0' => null,
 			'semester_1' => null,
 			'semester_2' => null,
@@ -83,44 +84,45 @@ class PhysicalFitness extends Model
 			'semester_6' => null
 		];
 
-    $newData = collect();
+		$newData = collect();
 
-    $labels->each( function ($label, $labelKey) use ($data, $newData, &$semesters) {
-      $data->each(function ($d, $dKey) use ($labelKey, &$semesters) {
-        if (!is_numeric($d->$labelKey)) {
+		$labels->each(function ($label, $labelKey) use ($data, $newData, &$semesters) {
+			$data->each(function ($d, $dKey) use ($labelKey, &$semesters) {
+				if (!is_numeric($d->$labelKey)) {
 					// $semesters[$columns[$dKey]] = $d->$labelKey;
 					$semesters['semester_' . $d->semester] = $d->$labelKey;
-        } else {
+				} else {
 					// $semesters[$columns[$dKey]] = round($d->$labelKey, 2);
 					$semesters['semester_' . $d->semester] = round($d->$labelKey, 2);
-        }
-      });
-      $newData->put($labelKey, collect([ 'label' => $label ] + $semesters));
-    });
+				}
+			});
+			$newData->put($labelKey, collect(['label' => $label] + $semesters));
+		});
 
-    return $newData;
+		return $newData;
 	}
-	
+
 	/**
 	 * Get calculate from chart by userId
 	 * @param $userId
 	 * @return collect DataTable format
 	 */
-	public function getCalculateFromChart($userId) {
+	public function getCalculateFromChart($userId)
+	{
 		$selectFields = [
 			'semester',
-      'long_jump_point',
-      'torso_inclination_point',
-      'run_shuttle_point',
-      'pull_up_point',
-      'press_point',
-      'push_up_point',
-      'run_short_point',
-      'run_long_point',
-      'swimming_point'
-    ];
+			'long_jump_point',
+			'torso_inclination_point',
+			'run_shuttle_point',
+			'pull_up_point',
+			'press_point',
+			'push_up_point',
+			'run_short_point',
+			'run_long_point',
+			'swimming_point'
+		];
 
-    $user = User::find($userId);
+		$user = User::find($userId);
 
 		$profile = $user->profile;
 
@@ -164,7 +166,8 @@ class PhysicalFitness extends Model
 	 * @param $userId
 	 * @return collect DataTable format
 	 */
-	public function getAssessmentFromChart($userId) {
+	public function getAssessmentFromChart($userId)
+	{
 		$data = User::find($userId)
 			->physicalFitnesses()
 			->select('semester', 'assessment')
