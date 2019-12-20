@@ -3,7 +3,7 @@
     <div class="box box-primary">
       <div class="box-body">
         <div class="new-file">
-          <form id="new-file-form" @submit.prevent="submitForm">
+          <form id="new-file-form" @submit.prevent="submitForm" :class="{ 'has-error': errors.length }">
             <div class="new-file-field">
               <div class="new-file-name">
                 <input class="form-control" name="name" placeholder="Имя файла" v-model="fileName" required>
@@ -16,6 +16,7 @@
               </div>
               <button type="submit" class="btn btn-primary">Загрузить файл</button>
             </div>
+            <div v-for="(error, key) in errors" :key="key" class="help-block">{{ error }}</div>            
           </form>
         </div>
       </div>
@@ -137,7 +138,7 @@
         editingFile: {},
         deletingFile: {},
 
-        errors: {}
+        errors: []
       }
     },
 
@@ -182,6 +183,7 @@
       },
 
       async submitForm() {
+        this.errors = [];
         this.formData = new FormData();
         this.formData.append('name', this.fileName);
         this.formData.append('file', this.attachment);
@@ -195,9 +197,11 @@
           this.resetForm();
           this.showNotification('Файл успешно загружен!', true);
         } catch (error) {
-          console.log(error)
-          this.errors = error.response.data.errors;
-          this.showNotification(error.response.data.message, false);
+          if (error.response.status === 422) {
+            this.errors = error.response.data.file;
+          } else {
+            this.showNotification(error.response.data.message, false);
+          }
         } finally {
           this.fetchFile(1, this.activeTab);
         }
