@@ -52,50 +52,52 @@
                         v-for="pp in perPages" :key="pp" @click.prevent="changePerPage(pp)"
                       >{{ pp != -1 ? pp : 'Все' }}</a>
                     </div>
-										<table class="table table-bordered table-striped table-no-hover">
-											<thead>
-												<tr>
-                          <th class="select-staff"><checkbox v-model="selectAll"/></th>
-                          <th>Имя</th>
-                          <th>Email</th>
-                          <th>Права доступа</th>
-                          <th>Должность</th>
-                          <th>Дата регистрации</th>
-                          <th>Опции</th>
-												</tr>
-											</thead>
-                      <tbody>
-                        <tr v-for="staff in listStaffs.data" :key="staff.id">
-                          <td class="select-staff">
-                            <div class="custom-control custom-checkbox">
-                              <input type="checkbox" :id="`staff-${staff.id}`" class="custom-control-input" 
-                                :value="staff.id"
-                                v-model="selectStaffsID">
-                              <label :for="`staff-${staff.id}`" class="custom-control-label"></label>
-                            </div>
-                          </td>
-                          <td><a href="javascript:void(0)" @click.prevent="$router.push({
-                            name: 'profile.staff',
-                            params: { id: staff.id }
-                          })">{{ staff.name }}</a></td>
-                          <td>{{ staff.email }}</td>
-                          <td>{{ staff.role == 'admin' ? 'Администратор' : 'Преподаватель' }}</td>
-                          <td>{{ staff.profile.position || 'Не указано' }}</td>
-                          <td>{{ staff.created_at }}</td>
-                          <td class="options">
-                            <div class="btn-group">
-                              <button class="btn btn-sm btn-success w-50 user-profile-btn" 
-                                  @click.prevent="$router.push({
-                                    name: 'profile.staff',
-                                    params: { id: staff.id }
-                                  })"
-                              ><i class="fa fa-id-card fa-fw"></i></button>
-                              <button class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStaffs(staff.id)"><i class="fa fa-trash fa-fw"></i></button>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-										</table>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-no-hover">
+                        <thead>
+                          <tr>
+                            <th class="select-staff"><checkbox v-model="selectAll"/></th>
+                            <th>Имя</th>
+                            <th>Email</th>
+                            <th>Права доступа</th>
+                            <th>Должность</th>
+                            <th>Дата регистрации</th>
+                            <th>Опции</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="staff in listStaffs.data" :key="staff.id">
+                            <td class="select-staff">
+                              <div class="custom-control custom-checkbox">
+                                <input type="checkbox" :id="`staff-${staff.id}`" class="custom-control-input" 
+                                  :value="staff.id"
+                                  v-model="selectStaffsID">
+                                <label :for="`staff-${staff.id}`" class="custom-control-label"></label>
+                              </div>
+                            </td>
+                            <td><a href="javascript:void(0)" @click.prevent="$router.push({
+                              name: 'profile.staff',
+                              params: { id: staff.id }
+                            })">{{ staff.name }}</a></td>
+                            <td>{{ staff.email }}</td>
+                            <td>{{ staff.role == 'admin' ? 'Администратор' : 'Преподаватель' }}</td>
+                            <td>{{ staff.profile.position || 'Не указано' }}</td>
+                            <td>{{ staff.created_at }}</td>
+                            <td class="options">
+                              <div class="btn-group">
+                                <button class="btn btn-sm btn-success w-50 user-profile-btn" 
+                                    @click.prevent="$router.push({
+                                      name: 'profile.staff',
+                                      params: { id: staff.id }
+                                    })"
+                                ><i class="fa fa-id-card fa-fw"></i></button>
+                                <button class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStaffs(staff.id)"><i class="fa fa-trash fa-fw"></i></button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                     <pagination :data="listStaffs" :limit="3" @pagination-change-page="fetchStaffs" :show-disabled="true">
                       <span slot="prev-nav"><i class="fa fa-angle-left"></i></span>
                       <span slot="next-nav"><i class="fa fa-angle-right"></i></span>

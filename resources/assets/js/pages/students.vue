@@ -86,56 +86,58 @@
                           v-for="pp in perPages" :key="pp" @click.prevent="changePerPage(pp)"
                         >{{ pp != -1 ? pp : 'Все' }}</a>
                       </div>
-                      <table class="table table-bordered table-striped table-no-hover">
-                          <thead>
-                            <tr>
-                              <th class="select-student"><checkbox v-model="selectAll"/></th>
-                              <th id="name">Имя</th>
-                              <th id="birthday">Дата рождения</th>
-                              <th id="course">Курс</th>
-                              <th id="group">Группа</th>
-                              <th id="faculty">Факультет</th>
-                              <th id="teacher">Препод.</th>
-                              <th>Опции</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr v-for="student in listStudents.data" :key="student.id">
-                              <td class="select-student">
-                                <div class="custom-control custom-checkbox">
-                                  <input type="checkbox" :id="`student-${student.id}`" class="custom-control-input" 
-                                    :value="student.id"
-                                    v-model="selectStudentsID">
-                                  <label :for="`student-${student.id}`" class="custom-control-label"></label>
-                                </div>
-                              </td>
-                              <td><a href="javascript:void(0)" @click.prevent="$router.push({
-                                name: 'profile.student',
-                                params: { id: student.id }
-                              })">{{ student.name }}</a></td>
-                              <td>{{ student.birthday }}</td>
-                              <td>{{ student.course }}</td>
-                              <td>{{ student.group }}</td>
-                              <td>{{ student.faculty_name }}</td>
-                              <td>{{ student.teacher_name }}</td>
-                              <td class="options">
-                                <div class="btn-group">
-                                  <button class="btn btn-sm btn-success user-profile-btn"
-                                      :class="{ 
-                                        'w-50' : user.role === 'admin',  
-                                        'w-100' : user.role === 'teacher'
-                                      }"
-                                      @click.prevent="$router.push({
-                                        name: 'profile.student',
-                                        params: { id: student.id }
-                                      })"
-                                  ><i class="fa fa-id-card fa-fw"></i></button>
-                                  <button v-if="check && user.role === 'admin'" class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStudents(student.id)"><i class="fa fa-trash fa-fw"></i></button>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                      </table>
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-no-hover">
+                            <thead>
+                              <tr>
+                                <th class="select-student"><checkbox v-model="selectAll"/></th>
+                                <th id="name">Имя</th>
+                                <th id="birthday">Дата рождения</th>
+                                <th id="course">Курс</th>
+                                <th id="group">Группа</th>
+                                <th id="faculty">Факультет</th>
+                                <th id="teacher">Препод.</th>
+                                <th>Опции</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="student in listStudents.data" :key="student.id">
+                                <td class="select-student">
+                                  <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" :id="`student-${student.id}`" class="custom-control-input" 
+                                      :value="student.id"
+                                      v-model="selectStudentsID">
+                                    <label :for="`student-${student.id}`" class="custom-control-label"></label>
+                                  </div>
+                                </td>
+                                <td><a href="javascript:void(0)" @click.prevent="$router.push({
+                                  name: 'profile.student',
+                                  params: { id: student.id }
+                                })">{{ student.name }}</a></td>
+                                <td>{{ student.birthday }}</td>
+                                <td>{{ student.course }}</td>
+                                <td>{{ student.group }}</td>
+                                <td>{{ student.faculty_name }}</td>
+                                <td>{{ student.teacher_name }}</td>
+                                <td class="options">
+                                  <div class="btn-group">
+                                    <button class="btn btn-sm btn-success user-profile-btn"
+                                        :class="{ 
+                                          'w-50' : user.role === 'admin',  
+                                          'w-100' : user.role === 'teacher'
+                                        }"
+                                        @click.prevent="$router.push({
+                                          name: 'profile.student',
+                                          params: { id: student.id }
+                                        })"
+                                    ><i class="fa fa-id-card fa-fw"></i></button>
+                                    <button v-if="check && user.role === 'admin'" class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStudents(student.id)"><i class="fa fa-trash fa-fw"></i></button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                      </div>
                       <pagination :data="listStudents" :limit="3" @pagination-change-page="fetchStudents" :show-disabled="true">
                         <span slot="prev-nav"><i class="fa fa-angle-left"></i></span>
 	                      <span slot="next-nav"><i class="fa fa-angle-right"></i></span>
