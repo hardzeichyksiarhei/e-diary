@@ -181,7 +181,7 @@
           <a href="#" data-toggle="modal" data-target="#logout">
             <i class="fa fa-sign-out"></i>
             <span>Выйти</span>
-          </a>
+          </a> 
         </li>
       </ul>
       <!-- /.sidebar-menu -->
