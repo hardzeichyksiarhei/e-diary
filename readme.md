@@ -20,10 +20,11 @@
 - Расширение PHP XML
 
 #### Требования к сборке проекта
-- nodejs >= 8.9.0
+- nodejs (v.8.9.0)
 - composer
 
 **Front-end:** Vue + Webpack
+
 **Back-end:** Laravel 5.4
 
 ### Сборка back-end'a:
