@@ -116,7 +116,7 @@
 
   export default {
 
-    middleware: ['auth', 'admin'],
+    middleware: ['auth', 'not-student'],
 
     name: "files",
 
