@@ -21,6 +21,22 @@
             <button class="btn btn-flat btn-danger w-100 mt-2" data-toggle="modal" data-target="#remove-user">
               <i class="fa fa-fw fa-trash"></i>&nbsp;Удалить
             </button>
+
+            <modal :modal-id="'remove-user'">
+              <template v-slot:title>Удаление аккаунта</template>
+              <template
+                v-slot:body
+              >Вы действительно хотите удалить свой аккаунт? Все данные будут утеряны.</template>
+              <template v-slot:footer>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  @click="userRemove(user.id)"
+                >Удалить</button>
+              </template>
+            </modal>
         </div>
         <!-- /.box-body -->
     </div>
@@ -28,18 +44,48 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+    import axios from 'axios'
+    import { mapGetters } from 'vuex'
 
-  export default {
+    import Modal from '~/components/Modal'
 
-    name: 'image-staff-box',
+    export default {
+        name: 'image-staff-box',
 
-    computed: mapGetters({
-      check: 'auth/check',
-      user: 'auth/user'
-    })
+        components: {
+            Modal
+        },
 
-  }
+        props: {
+            user: {
+                type: Object,
+                default: () => {}
+            }
+        },
+
+        filters: {
+            isEmpty (value) {
+                return value || 'Нет данных'
+            }
+        },
+
+        methods: {
+            async userRemove(user_id) {
+                try {
+                    const res = await axios.delete('/api/user', { params: { ids: this.user.id } })
+
+                    // Log out the user.
+                    this.$store.commit("auth/LOGOUT");
+
+                    // Redirect to login.
+                    this.$router.push({ name: "login" });
+                } catch (error) {
+                    IziToast.error({ message: error.response.data.message })
+                }
+            }
+        }
+
+    }
 </script>
 
 <style lang="less" scoped></style>

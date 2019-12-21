@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
             $table->enum('role', ['admin', 'teacher', 'student']);
             $table->boolean('has_profile')->default(false);
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -26,9 +26,8 @@ class CreateProfileStaffsTable extends Migration
         });
 
         Schema::table('profile_staffs', function($table) {
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-          
-		    	$table->index(['user_id']);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+		    $table->index(['user_id']);
 	    });
     }
 

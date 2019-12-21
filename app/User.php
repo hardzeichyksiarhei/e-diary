@@ -15,14 +15,7 @@ use App\Traits\CalculateAge;
 
 class User extends Authenticatable implements JWTSubject
 {
-	use Notifiable, CalculateAge, SoftDeletes;
-
-	/**
-   * Атрибуты, которые должны быть преобразованы в даты.
-   *
-   * @var array
-   */
-	protected $dates = ['deleted_at'];
+	use Notifiable, CalculateAge;
 
 	/**
 	 * The attributes that are mass assignable.
@@ -135,8 +128,10 @@ class User extends Authenticatable implements JWTSubject
 		parent::boot();
 
 		static::deleting(function ($user) {
-      $user_dir = explode('@', $user->email)[0] . '_' . $user->id;
-      Storage::disk('documents')->deleteDirectory($user_dir);
+			if ($user->role !== 'student') {
+				$user_dir = explode('@', $user->email)[0] . '_' . $user->id;
+      			Storage::disk('documents')->deleteDirectory($user_dir);
+			}
 		});
   }
 

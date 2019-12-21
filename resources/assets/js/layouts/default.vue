@@ -90,21 +90,6 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="remove-user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Удаление аккаунта</h4>
-          </div>
-          <div class="modal-body">Вы действительно хотите удалить свой аккаунт? Все данные будут утеряны.</div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-            <button type="button" class="btn btn-primary" @click="remove" data-dismiss="modal">Удалить</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <add-user-popup v-if="user.role == 'admin'"/>
   </div>
 </template>
@@ -362,21 +347,6 @@ export default {
 
       // Redirect to login.
       this.$router.push({ name: "login" });
-    },
-    async remove() {
-      try {
-        await axios.delete('/api/user', {
-          params: { ids: this.user.id }
-        })
-
-        // Log out the user.
-        this.$store.commit("auth/LOGOUT");
-
-        // Redirect to login.
-        this.$router.push({ name: "login" });
-      } catch (error) {
-        IziToast.error({ message: error.response.data.message })
-      }
     }
   }
 };

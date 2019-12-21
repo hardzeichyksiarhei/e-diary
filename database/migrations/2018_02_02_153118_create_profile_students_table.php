@@ -28,8 +28,8 @@ class CreateProfileStudentsTable extends Migration
         });
 
 	    Schema::table('profile_students', function($table) {
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        $table->foreign('teacher_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('set null');
 		    $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('set null');
 		    $table->foreign('health_group_id')->references('id')->on('health_groups')->onDelete('set null');
 

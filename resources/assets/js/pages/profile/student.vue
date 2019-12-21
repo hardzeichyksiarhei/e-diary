@@ -2,37 +2,8 @@
   <div class="student-wrapper">
     <div class="row">
       <div class="col-md-3 col-sm-4">
-
         <!-- Profile Image -->
-        <div class="box box-primary">
-          <div class="box-body box-profile">
-            <img class="profile-user-img img-responsive img-circle" :src="user.photo_url" alt="User profile picture">
-
-            <h3 class="profile-username text-center">{{ user.name }}</h3>
-
-            <p class="text-muted text-center">Студент</p>
-
-            <ul class="list-group list-group-unbordered mb-0">
-              <li class="list-group-item border-top-0">
-                <b>E-mail: </b> <a :href="`mailto:${user.email}`">{{ user.email }}</a>
-              </li>
-              <li class="list-group-item">
-                <b>Возраст: </b> {{ user.age | isEmpty }}
-              </li>
-              <li class="list-group-item">
-                <b>Факультет: </b> {{ user.profile.faculty | isEmpty }}
-              </li>
-              <li class="list-group-item">
-                <b>Курс: </b> {{ user.profile.course | isEmpty }}
-              </li>
-              <li class="list-group-item border-bottom-0">
-                <b>Группа: </b> {{ user.profile.group | isEmpty }}
-              </li>
-            </ul>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
+        <image-student-box :user="user"/>
 
         <!-- About Me Box -->
         <div class="box box-primary">
@@ -41,29 +12,38 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <strong><i class="fa fa-university margin-r-5"></i> Преподаватель</strong>
+            <strong>
+              <i class="fa fa-university margin-r-5"></i> Преподаватель
+            </strong>
 
             <p class="text-muted">{{ user.profile.teacher | isEmpty }}</p>
 
-            <hr>
+            <hr />
 
-            <strong><i class="fa fa-mortar-board margin-r-5"></i> Медицинская группа здоровья</strong>
+            <strong>
+              <i class="fa fa-mortar-board margin-r-5"></i> Медицинская группа здоровья
+            </strong>
 
             <p class="text-muted">{{ user.profile.health_group | isEmpty }}</p>
 
-            <hr>
+            <hr />
 
-            <strong><i class="fa fa-pencil margin-r-5"></i> Заболевание</strong>
+            <strong>
+              <i class="fa fa-pencil margin-r-5"></i> Заболевание
+            </strong>
 
             <p>{{ user.profile.disease | isEmpty }}</p>
 
-						<template v-if="!user.profile.disease_groups">
-              <hr>
+            <template v-if="!user.profile.disease_groups">
+              <hr />
 
-              <strong><i class="fa fa-pencil margin-r-5"></i> Группы заболеваний</strong>
+              <strong>
+                <i class="fa fa-pencil margin-r-5"></i> Группы заболеваний
+              </strong>
 
               <p v-for="dg in user.profile.disease_groups" :key="dg.id">
-                <b>{{ dg.name }}</b> – {{ dg.text }}
+                <b>{{ dg.name }}</b>
+                – {{ dg.text }}
               </p>
             </template>
           </div>
@@ -73,35 +53,45 @@
       </div>
       <!-- /.col -->
       <div class="col-md-9 col-sm-8">
-				<div class="nav-tabs-custom-pills">
-					<ul class="nav nav-pills">
-						<li class="active"><a href="#fs-tables" data-toggle="tab">ФР и ФС (таблица)</a></li>
-						<li><a href="#fs-charts" data-toggle="tab">ФР и ФС (графики)</a></li>
-            <li><a href="#pf-tables" data-toggle="tab">ФП (таблица)</a></li>
-            <li><a href="#pf-charts" data-toggle="tab">ФП (графики)</a></li>
-					</ul>
-					<div class="tab-content">
-						<div class="active tab-pane" id="fs-tables">
-							<div class="box box-primary">
-								<div class="box-header with-border">
-									<h4 class="box-title"><i class="fa fa-fw fa-table"></i>Показатели ФР и ФС</h4>
-									<div class="box-tools pull-right d-flex"></div>
-								</div>
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-no-hover table-bordered table-striped"> 
-											<thead> 
-												<tr>
-													<th>Показатели ФР и ФС</th>
-													<th>Нач. 1 семестра</th>
-													<th>1 семестр</th>
-													<th>2 семестр</th>
-													<th>3 семестр</th>
-													<th>4 семестр</th>
-													<th>5 семестр</th>
-													<th>6 семестр</th>
-												</tr> 
-											</thead>
+        <div class="nav-tabs-custom-pills">
+          <ul class="nav nav-pills">
+            <li class="active">
+              <a href="#fs-tables" data-toggle="tab">ФР и ФС (таблица)</a>
+            </li>
+            <li>
+              <a href="#fs-charts" data-toggle="tab">ФР и ФС (графики)</a>
+            </li>
+            <li>
+              <a href="#pf-tables" data-toggle="tab">ФП (таблица)</a>
+            </li>
+            <li>
+              <a href="#pf-charts" data-toggle="tab">ФП (графики)</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="active tab-pane" id="fs-tables">
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h4 class="box-title">
+                    <i class="fa fa-fw fa-table"></i>Показатели ФР и ФС
+                  </h4>
+                  <div class="box-tools pull-right d-flex"></div>
+                </div>
+                <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table table-no-hover table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Показатели ФР и ФС</th>
+                          <th>Нач. 1 семестра</th>
+                          <th>1 семестр</th>
+                          <th>2 семестр</th>
+                          <th>3 семестр</th>
+                          <th>4 семестр</th>
+                          <th>5 семестр</th>
+                          <th>6 семестр</th>
+                        </tr>
+                      </thead>
                       <tbody>
                         <template v-if="functionalState">
                           <tr v-for="fs in functionalState" :key="fs.id">
@@ -119,70 +109,84 @@
                           <td colspan="8" align="center">Данных нет</td>
                         </tr>
                       </tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /.tab-pane -->
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
 
-						<div class="tab-pane" id="fs-charts">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="box box-primary">
-										<div class="box-header with-border">
-											<h4 class="box-title"><i class="fa fa-fw fa-bar-chart"></i>Показатели ФР и ФС (по кол-ву баллов)</h4>
-										</div>
-										<div class="box-body">
-											<functional-state-bar-chart v-if="renderFSChart" :user-id="$route.params.id"/>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="box box-primary">
-										<div class="box-header with-border">
-											<h4 class="box-title"><i class="fa fa-fw fa-area-chart"></i>Оценка ФР и ФС</h4>
-										</div>
-										<div class="box-body">
-											<functional-state-assessment-bar-chart v-if="renderFSChart" :user-id="$route.params.id"/>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="box box-primary">
-										<div class="box-header with-border">
-											<h4 class="box-title"><i class="fa fa-fw fa-area-chart"></i>Общая оценка ФР, ФС и ФП</h4>
-										</div>
-										<div class="box-body">
-											<common-assessment-bar-chart v-if="renderFSChart" :user-id="$route.params.id"/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /.tab-pane -->
+            <div class="tab-pane" id="fs-charts">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-bar-chart"></i>Показатели ФР и ФС (по кол-ву баллов)
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <functional-state-bar-chart v-if="renderFSChart" :user-id="$route.params.id" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-area-chart"></i>Оценка ФР и ФС
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <functional-state-assessment-bar-chart
+                        v-if="renderFSChart"
+                        :user-id="$route.params.id"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-area-chart"></i>Общая оценка ФР, ФС и ФП
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <common-assessment-bar-chart
+                        v-if="renderFSChart"
+                        :user-id="$route.params.id"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
 
             <div class="tab-pane" id="pf-tables">
-							<div class="box box-primary">
-								<div class="box-header with-border">
-									<h4 class="box-title"><i class="fa fa-fw fa-table"></i>Показатели ФР и ФС</h4>
-									<div class="box-tools pull-right d-flex"></div>
-								</div>
-								<div class="box-body">
-									<div class="table-responsive">
-										<table class="table table-no-hover table-bordered table-striped"> 
-											<thead> 
-												<tr>
-													<th>Тесты</th>
-													<th>Исход. дан. (нач. 1 сем.)</th>
-													<th>1 семестр</th>
-													<th>2 семестр</th>
-													<th>3 семестр</th>
-													<th>4 семестр</th>
-													<th>5 семестр</th>
-													<th>6 семестр</th>
-												</tr> 
-											</thead>
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h4 class="box-title">
+                    <i class="fa fa-fw fa-table"></i>Показатели ФР и ФС
+                  </h4>
+                  <div class="box-tools pull-right d-flex"></div>
+                </div>
+                <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table table-no-hover table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Тесты</th>
+                          <th>Исход. дан. (нач. 1 сем.)</th>
+                          <th>1 семестр</th>
+                          <th>2 семестр</th>
+                          <th>3 семестр</th>
+                          <th>4 семестр</th>
+                          <th>5 семестр</th>
+                          <th>6 семестр</th>
+                        </tr>
+                      </thead>
                       <tbody>
                         <template v-if="physicalFitness">
                           <tr v-for="pf in physicalFitness" :key="pf.id">
@@ -200,42 +204,49 @@
                           <td colspan="8" align="center">Данных нет</td>
                         </tr>
                       </tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /.tab-pane -->
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
 
             <div class="tab-pane" id="pf-charts">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="box box-primary">
-										<div class="box-header with-border">
-											<h4 class="box-title"><i class="fa fa-fw fa-bar-chart"></i>Показатели ФП (по кол-ву баллов)</h4>
-										</div>
-										<div class="box-body">
-											<physical-fitness-bar-chart v-if="renderPFChart" :user="user"/>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="box box-primary">
-										<div class="box-header with-border">
-											<h4 class="box-title"><i class="fa fa-fw fa-area-chart"></i>Оценка ФП</h4>
-										</div>
-										<div class="box-body">
-											<physical-fitness-assessment-bar-chart v-if="renderPFChart" :user-id="$route.params.id"/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /.tab-pane -->
-					</div>
-					<!-- /.tab-content -->
-				</div>
-				<!-- /.nav-tabs-custom -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-bar-chart"></i>Показатели ФП (по кол-ву баллов)
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <physical-fitness-bar-chart v-if="renderPFChart" :user="user" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-area-chart"></i>Оценка ФП
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <physical-fitness-assessment-bar-chart
+                        v-if="renderPFChart"
+                        :user-id="$route.params.id"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.nav-tabs-custom -->
       </div>
       <!-- /.col -->
     </div>
@@ -244,99 +255,105 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { domainURL } from '~/config'
-import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart"
-import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart"
-import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart"
+import axios from "axios";
+import { domainURL } from "~/config";
 
-import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart"
-import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart"
+import ImageStudentBox from '../../components/profile/ImageStudentBox'
+
+import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart";
+import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart";
+import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart";
+
+import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart";
+import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart";
 
 export default {
-	middleware: ['auth', 'not-student'],
+  middleware: ["auth", "not-student"],
 
-	name: 'student',
+  name: "student",
 
-	components: {
-		FunctionalStateAssessmentBarChart,
-		FunctionalStateBarChart,
+  components: {
+	  ImageStudentBox,
+	
+    FunctionalStateAssessmentBarChart,
+    FunctionalStateBarChart,
     CommonAssessmentBarChart,
-    
+
     PhysicalFitnessAssessmentBarChart,
     PhysicalFitnessBarChart
-	},
+  },
 
-	data () {
-		return {
+  data() {
+    return {
       renderFSChart: false,
       renderPFChart: false,
-			user: {
-				name: '',
-				role: '',
-				photo_url: '',
-				profile: {
-					age: '',
-					teacher: {
-						name: ''
-					},
-					health_group: {
-						name: ''
-					},
-					faculty: {
-						name: ''
-					}
-				}
+      user: {
+        name: "",
+        role: "",
+        photo_url: "",
+        profile: {
+          age: "",
+          teacher: {
+            name: ""
+          },
+          health_group: {
+            name: ""
+          },
+          faculty: {
+            name: ""
+          }
+        }
       },
       functionalState: [],
       physicalFitness: []
-		}
-	},
-
-	mounted() {
-
-		$('a[href="#fs-charts"]').on('shown.bs.tab', (e) => {
-			this.renderFSChart = true
-    })
-
-    $('a[href="#pf-charts"]').on('shown.bs.tab', (e) => {
-			this.renderPFChart = true
-    })
-
+    };
   },
-	
-	created () {
+
+  mounted() {
+    $('a[href="#fs-charts"]').on("shown.bs.tab", e => {
+      this.renderFSChart = true;
+    });
+
+    $('a[href="#pf-charts"]').on("shown.bs.tab", e => {
+      this.renderPFChart = true;
+    });
+  },
+
+  created() {
     this.getUserByID();
     this.fetchFunctionalState();
     this.fetchPhysicalFitness();
-	},
+  },
 
-	filters: {
-		isEmpty (value) {
-      console.log(value)
-			return value || 'Нет данных'
-		}
-	},
+  filters: {
+    isEmpty(value) {
+      return value || "Нет данных";
+    }
+  },
 
-	methods: {
-		async getUserByID () {
-			let id = this.$route.params.id
-			const { data } = await axios.get(`/api/user/${id}`);
+  methods: {
+    async getUserByID() {
+      let id = this.$route.params.id;
+      const { data } = await axios.get(`/api/user/${id}`);
 
-			this.user = data
-		},
-		async fetchFunctionalState () {
-      const { data } = await axios.get('/api/functional-state/calculation/' + this.$route.params.id)
+      this.user = data;
+    },
+    async fetchFunctionalState() {
+      const { data } = await axios.get(
+        "/api/functional-state/calculation/" + this.$route.params.id
+      );
 
       this.functionalState = data;
     },
-    async fetchPhysicalFitness () {
-      const { data } = await axios.get('/api/physical-fitness/calculation/' + this.$route.params.id)
+    async fetchPhysicalFitness() {
+      const { data } = await axios.get(
+        "/api/physical-fitness/calculation/" + this.$route.params.id
+      );
 
       this.physicalFitness = data;
     }
-	}
-}
+  }
+};
 </script>
 
 <style lang='scss' scoped></style>

@@ -4,8 +4,8 @@
         <div class="col-md-3">
 
           <!-- Profile Image -->
-          <image-staff-box v-if="check && user.role !== 'student'"/>
-          <image-student-box v-if="check && user.role === 'student'"/>
+          <image-staff-box v-if="check && user.role !== 'student'" :user="user"/>
+          <image-student-box v-if="check && user.role === 'student'" :user="user"/>
 
           <!-- About Me Box -->
           <about-me-staff-box v-if="check && user.role !== 'student'"/>
@@ -41,7 +41,7 @@
               <div class="tab-pane" id="edit-profile">
                 <template v-if="check">
                   <update-student-profile-data v-if="user.role === 'student'"/>
-                  <update-staff-profile-data v-else />
+                  <update-staff-profile-data v-else/>
                 </template>
               </div>
               <!-- /.tab-pane -->

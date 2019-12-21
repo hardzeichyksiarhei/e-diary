@@ -55,11 +55,10 @@ class CreatePhysicalFitnessesTable extends Migration
 					$table->string('level')->default(''); // Уровень ФП
 
           $table->timestamps();
-          
-          $table
-            ->foreign('user_id')
-            ->references('id')
-            ->on('users');
+
+
+          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          $table->index(['user_id']);
         });
     }
 

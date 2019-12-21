@@ -58,7 +58,6 @@ class UserController extends Controller
 		$students = DB::table('users as u1')->where([
         ['u1.name', 'like', "%$search->name%"],
 				['u1.role', 'student'],
-        ['u1.deleted_at', null],
         ['faculties.name', 'like', "%$search->faculty%"],
         ['u2.name', 'like', "%$search->teacher%"],
         ['profile_students.birthday', 'like', "%$search->birthday%"],
@@ -82,8 +81,6 @@ class UserController extends Controller
 	public function getStaffsPaginate( Request $request ) {
     $search = json_decode($request->search);
 
-    //$role = $search->role == '' ? []
-
     if ($search->role == 'admin') {
       $role = ['student', 'teacher'];
     } else if ($search->role == 'teacher') {
@@ -95,8 +92,7 @@ class UserController extends Controller
 		$teachers = User::where([
       ['id', '!=', $request->user()->id],
       ['name', 'like', "%$search->name%"],
-      ['email', 'like', "%$search->email%"],
-			['deleted_at', null]
+      ['email', 'like', "%$search->email%"]
     ])
       ->whereNotIn('role', $role)
       ->paginate($request->per_page);
