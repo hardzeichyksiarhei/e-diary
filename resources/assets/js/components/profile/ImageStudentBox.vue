@@ -53,7 +53,7 @@
             type="button"
             class="btn btn-primary"
             data-dismiss="modal"
-            @click="userRemove(user.id)"
+            @click="userRemove"
           >Удалить</button>
         </template>
       </modal>
@@ -76,6 +76,11 @@
             Modal
         },
 
+        computed: mapGetters({
+            check: 'auth/check',
+            auth_user: 'auth/user'
+        }),
+
         props: {
             user: {
                 type: Object,
@@ -90,17 +95,21 @@
         },
 
         methods: {
-            async userRemove(user_id) {
+            async userRemove() {
                 try {
-                    const res = await axios.delete('/api/user', {
-                        params: { ids: this.user.id }
-                    })
+                  await axios.delete('/api/user', {
+                      params: { ids: this.user.id }
+                  })
 
-                    // Log out the user.
-                    this.$store.commit("auth/LOGOUT");
+                   if (this.auth_user.id === this.user.id) {
+                      // Log out the user.
+                      this.$store.commit("auth/LOGOUT");
 
-                    // Redirect to login.
-                    this.$router.push({ name: "login" });
+                      // Redirect to login.
+                      this.$router.push({ name: "login" });
+                   } else {
+                     this.$router.go(-1);
+                   }
                 } catch (error) {
                     IziToast.error({ message: error.response.data.message })
                 }

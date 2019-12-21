@@ -121,17 +121,13 @@
                                 <td>{{ student.teacher_name }}</td>
                                 <td class="options">
                                   <div class="btn-group">
-                                    <button class="btn btn-sm btn-success user-profile-btn"
-                                        :class="{ 
-                                          'w-50' : user.role === 'admin',  
-                                          'w-100' : user.role === 'teacher'
-                                        }"
+                                    <button class="btn btn-sm btn-success user-profile-btn w-50"
                                         @click.prevent="$router.push({
                                           name: 'profile.student',
                                           params: { id: student.id }
                                         })"
                                     ><i class="fa fa-id-card fa-fw"></i></button>
-                                    <button v-if="check && user.role === 'admin'" class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStudents(student.id)"><i class="fa fa-trash fa-fw"></i></button>
+                                    <button class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStudents(student.id)"><i class="fa fa-trash fa-fw"></i></button>
                                   </div>
                                 </td>
                               </tr>
