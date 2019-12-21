@@ -49,15 +49,6 @@ class MessagesStatus extends Model
 		$this->save();
 	}
 
-	/*public static function boot()
-	{
-		parent::boot();
-
-		static::deleted(function ($message) {
-			$message->message()->doesntHave('messagesStatus')->delete();
-		});
-	}*/
-
 	public function message()
   {
     return $this->belongsTo('App\Message');

@@ -18,8 +18,7 @@ class StudentsExportToExcel {
 
     public function collection() {
         $data = DB::table('users as u1')->whereIn('u1.id', $this->ids)->where([
-            ['u1.role', 'student'],
-            ['u1.deleted_at', null]
+            ['u1.role', 'student']
         ])
         ->leftJoin('profile_students', 'profile_students.user_id', '=', 'u1.id')
         ->leftJoin('faculties', 'profile_students.faculty_id', '=', 'faculties.id')

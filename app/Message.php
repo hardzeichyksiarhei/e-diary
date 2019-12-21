@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
 
-  /*public static function boot() {
-		parent::boot();
-
-		static::deleted(function ($message) {
-		});
-	}*/
-
 	protected $fillable = [
     'sender_id',
 		'subject',
