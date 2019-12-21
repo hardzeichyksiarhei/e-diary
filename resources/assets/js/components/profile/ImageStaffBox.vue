@@ -13,8 +13,7 @@
                 </li>
                 <li class="list-group-item border-bottom-0">
                     <b>Моб. телефон:&nbsp;</b> 
-										<a v-if="user.profile.phone" href="tel:+375447610533">{{ user.profile.phone }}</a>
-										<template v-else>Нет данных</template>
+                    <a href="tel:+375447610533">{{ user.profile.phone | isEmpty }}</a>
                 </li>
             </ul>
 
@@ -50,11 +49,16 @@
     import Modal from '~/components/Modal'
 
     export default {
-        name: 'image-staff-box',
+        name: 'image-student-box',
 
         components: {
             Modal
         },
+
+        computed: mapGetters({
+            check: 'auth/check',
+            auth_user: 'auth/user'
+        }),
 
         props: {
             user: {
@@ -70,15 +74,21 @@
         },
 
         methods: {
-            async userRemove(user_id) {
+            async userRemove() {
                 try {
-                    const res = await axios.delete('/api/user', { params: { ids: this.user.id } })
+                  await axios.delete('/api/user', {
+                      params: { ids: this.user.id }
+                  })
 
-                    // Log out the user.
-                    this.$store.commit("auth/LOGOUT");
+                   if (this.auth_user.id === this.user.id) {
+                      // Log out the user.
+                      this.$store.commit("auth/LOGOUT");
 
-                    // Redirect to login.
-                    this.$router.push({ name: "login" });
+                      // Redirect to login.
+                      this.$router.push({ name: "login" });
+                   } else {
+                     this.$router.go(-1);
+                   }
                 } catch (error) {
                     IziToast.error({ message: error.response.data.message })
                 }
@@ -86,6 +96,7 @@
         }
 
     }
+</script>
 </script>
 
 <style lang="less" scoped></style>

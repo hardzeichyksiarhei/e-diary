@@ -8,7 +8,7 @@
           <image-student-box v-if="check && user.role === 'student'" :user="user"/>
 
           <!-- About Me Box -->
-          <about-me-staff-box v-if="check && user.role !== 'student'"/>
+          <about-me-staff-box v-if="check && user.role !== 'student'" :user="user"/>
           <about-me-student-box v-if="check && user.role === 'student'"/>
 
         </div>

@@ -33,16 +33,16 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
-
     export default {
 
         name: 'about-me-staff-box',
 
-        computed: mapGetters({
-            check: 'auth/check',
-            user: 'auth/user'
-        }),
+        props: {
+            user: {
+                type: Object,
+                default: () => {}
+            }
+        },
 
         filters: {
             isEmpty (value) {

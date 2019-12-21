@@ -6,50 +6,8 @@
         <image-student-box :user="user"/>
 
         <!-- About Me Box -->
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Доп. информация</h3>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-            <strong>
-              <i class="fa fa-university margin-r-5"></i> Преподаватель
-            </strong>
+        <about-me-student-box :user="user"/>
 
-            <p class="text-muted">{{ user.profile.teacher | isEmpty }}</p>
-
-            <hr />
-
-            <strong>
-              <i class="fa fa-mortar-board margin-r-5"></i> Медицинская группа здоровья
-            </strong>
-
-            <p class="text-muted">{{ user.profile.health_group | isEmpty }}</p>
-
-            <hr />
-
-            <strong>
-              <i class="fa fa-pencil margin-r-5"></i> Заболевание
-            </strong>
-
-            <p>{{ user.profile.disease | isEmpty }}</p>
-
-            <template v-if="!user.profile.disease_groups">
-              <hr />
-
-              <strong>
-                <i class="fa fa-pencil margin-r-5"></i> Группы заболеваний
-              </strong>
-
-              <p v-for="dg in user.profile.disease_groups" :key="dg.id">
-                <b>{{ dg.name }}</b>
-                – {{ dg.text }}
-              </p>
-            </template>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
       </div>
       <!-- /.col -->
       <div class="col-md-9 col-sm-8">
@@ -259,13 +217,14 @@ import axios from "axios";
 import { domainURL } from "~/config";
 
 import ImageStudentBox from '../../components/profile/ImageStudentBox'
+import AboutMeStudentBox from '../../components/profile/AboutMeStudentBox'
 
-import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart";
-import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart";
-import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart";
+import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart"
+import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart"
+import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart"
 
-import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart";
-import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart";
+import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart"
+import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart"
 
 export default {
   middleware: ["auth", "not-student"],
@@ -273,7 +232,8 @@ export default {
   name: "student",
 
   components: {
-	  ImageStudentBox,
+    ImageStudentBox,
+    AboutMeStudentBox,
 	
     FunctionalStateAssessmentBarChart,
     FunctionalStateBarChart,

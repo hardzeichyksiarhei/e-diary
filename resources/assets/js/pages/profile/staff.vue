@@ -4,32 +4,9 @@
       <div class="col-md-3 col-sm-4">
 
         <!-- Profile Image -->
-        <div class="box box-primary">
-          <div class="box-body box-profile">
-            <img class="profile-user-img img-responsive img-circle" :src="user.photo_url" alt="User profile picture">
-
-            <h3 class="profile-username text-center">{{ user.name }}</h3>
-
-            <p class="text-muted text-center">{{ user.role }}</p>
-
-            <ul class="list-group list-group-unbordered mb-0">
-              <li class="list-group-item border-top-0">
-                <b>E-mail: </b> <a :href="`mailto:${user.email}`">{{ user.email }}</a>
-              </li>
-              <li class="list-group-item">
-                <b>Должность: </b> {{ user.position | isEmpty }}
-              </li>
-              <li class="list-group-item">
-                <b>Звание: </b> {{ user.rank | isEmpty }}
-              </li>
-              <li class="list-group-item border-bottom-0">
-                <b>Степень: </b> {{ user.degree | isEmpty }}
-              </li>
-            </ul>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
+        <image-staff-box :user="user"/>
+        <about-me-staff-box :user="user"/>
+        
       </div>
       <!-- /.col -->
       <div class="col-md-9 col-sm-8">
@@ -173,12 +150,17 @@
 import axios from 'axios'
 import { domainURL } from '~/config'
 
+import ImageStaffBox from "~/components/profile/ImageStaffBox";
+import AboutMeStaffBox from "~/components/profile/AboutMeStaffBox";
+
 export default {
 	middleware: ['auth', 'admin'],
 
 	name: 'staff',
 
 	components: {
+    ImageStaffBox,
+    AboutMeStaffBox
 	},
 
 	data () {
