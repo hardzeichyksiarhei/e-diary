@@ -13,7 +13,8 @@
                 </li>
                 <li class="list-group-item border-bottom-0">
                     <b>Моб. телефон:&nbsp;</b> 
-                    <a href="tel:+375447610533">{{ user.profile.phone | isEmpty }}</a>
+                    <a v-if="user.profile.phone" href="tel:+375447610533">{{ user.profile.phone }}</a>
+                    <template v-else>Нет данных</template>
                 </li>
             </ul>
 

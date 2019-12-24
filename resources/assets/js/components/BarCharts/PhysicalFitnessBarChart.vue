@@ -36,6 +36,15 @@ export default {
         tooltips: {
           mode: 'index'
         },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                min: 0
+              }
+            }
+          ]
+        },
         responsive: true,
         maintainAspectRatio: false
       }
