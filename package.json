@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^1.0.5",
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
     "fullpage.js": "^2.9.6",
@@ -24,9 +24,9 @@
     "lodash": "^4.17.5",
     "material-design-icons-iconfont": "^3.0.3",
     "select2": "^4.0.6-rc.1",
-    "tinymce": "^4.7.10",
+    "tinymce": "^4.9.7",
     "vform": "^0.8.1",
-    "vue": "^2.5.13",
+    "vue": "^2.6.11",
     "vue-breadcrumbs": "^1.1.2",
     "vue-chartjs": "^3.2.1",
     "vue-meta": "^1.4.2",
@@ -46,7 +46,7 @@
     "laravel-mix": "^1.7.2",
     "less": "^3.0.4",
     "less-loader": "^4.0.6",
-    "vue-template-compiler": "^2.5.13",
-    "webpack-bundle-analyzer": "^2.9.2"
+    "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": ">=3.3.2"
   }
 }
