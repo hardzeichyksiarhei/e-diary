@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\FunctionalState;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Console\Commands\FunctionalState\MassIndex;
 use App\Console\Commands\FunctionalState\OrthostaticTest;
@@ -14,15 +14,18 @@ use App\Console\Commands\FunctionalState\SampleGenchi;
 
 use App\CommonTables\AssessmentLevel;
 
-class FunctionalStateController extends Controller {
+class FunctionalStateController extends Controller
+{
 
-	private $fs;
+  private $fs;
 
-	public function __construct() {
-			$this->fs = new FunctionalState();
-	}
+  public function __construct()
+  {
+    $this->fs = new FunctionalState();
+  }
 
-  public function getInitialData( Request $request, $semester ) {
+  public function getInitialData(Request $request, $semester)
+  {
     $exceptFileds = ['mass_index_value', 'mass_index_point', 'orthostatic_test_value', 'orthostatic_test_point', 'dosed_load_value', 'dosed_load_point'];
 
     return $request
@@ -33,7 +36,8 @@ class FunctionalStateController extends Controller {
       ->first();
   }
 
-  public function updateСalculation( Request $request, $semester ) {
+  public function updateСalculation(Request $request, $semester)
+  {
     $user = $request->user();
 
     $gender = $user->profile->gender;
@@ -41,14 +45,14 @@ class FunctionalStateController extends Controller {
     // Росто-масовый показатель
     $mass_body = $request['mass_body'];
     $length_body = $request['length_body'];
-    $mass_index = $this->dispatch( new MassIndex($gender, $mass_body, $length_body) );
+    $mass_index = $this->dispatch(new MassIndex($gender, $mass_body, $length_body));
     $mass_index_value = $mass_index['value'];
     $mass_index_point = $mass_index['point'];
 
     // Ортостатическая проба
     $chss_stand = $request['chss_stand'];
     $chss_lie = $request['chss_lie'];
-    $orthostatic_test = $this->dispatch( new OrthostaticTest($gender, $chss_lie, $chss_stand) );
+    $orthostatic_test = $this->dispatch(new OrthostaticTest($gender, $chss_lie, $chss_stand));
     $orthostatic_test_point = $orthostatic_test['point'];
     $orthostatic_test_value = $orthostatic_test['value'];
 
@@ -56,20 +60,20 @@ class FunctionalStateController extends Controller {
     $chss_initial = $request['chss_initial'];
     $chss_after_load = $request['chss_after_load'];
     $chss_restoring = $request['chss_restoring'];
-    $dosed_load = $this->dispatch( new DosedLoad($gender, $chss_initial, $chss_after_load, $chss_restoring) );
+    $dosed_load = $this->dispatch(new DosedLoad($gender, $chss_initial, $chss_after_load, $chss_restoring));
     $dosed_load_value = $dosed_load['value'];
     $dosed_load_point = $dosed_load['point'];
 
     // Проба Генчи
     $sample_shtange = $request['sample_shtange'];
-    $sample_shtange_point = $this->dispatch( new SampleShtange($gender, $sample_shtange) );
+    $sample_shtange_point = $this->dispatch(new SampleShtange($gender, $sample_shtange));
 
     // Проба Штанге
     $sample_genchi = $request['sample_genchi'];
-    $sample_genchi_point = $this->dispatch( new SampleGenchi($gender, $sample_genchi) );
+    $sample_genchi_point = $this->dispatch(new SampleGenchi($gender, $sample_genchi));
 
     // Сумма баллов ФР и ФС
-    $points = [ $mass_index_point, $orthostatic_test_point, $dosed_load_point, $sample_shtange_point, $sample_genchi_point ];
+    $points = [$mass_index_point, $orthostatic_test_point, $dosed_load_point, $sample_shtange_point, $sample_genchi_point];
     $sum_scores = array_sum($points);
 
     $amount_tests = 0;
@@ -112,64 +116,67 @@ class FunctionalStateController extends Controller {
         'level' => $level,
         'assessment' => $assessment
       ]);
-
   }
 
-	public function getСalculationFromTableByID (Request $request, $id) {
-		$data = $this->fs->getCalculate($id);
-		return $data;
-	}
+  public function getСalculationFromTableByID(Request $request, $id)
+  {
+    $data = $this->fs->getCalculate($id);
+    return $data;
+  }
 
-	public function getСalculationPointsFromChartByID (Request $request, $id) {
-		$data = $this->fs->getCalculateFromChart($id);
-		return $data;
-	}
+  public function getСalculationPointsFromChartByID(Request $request, $id)
+  {
+    $data = $this->fs->getCalculateFromChart($id);
+    return $data;
+  }
 
-	public function getAssessmentFromChartByID (Request $request, $id) {
+  public function getAssessmentFromChartByID(Request $request, $id)
+  {
     $data = $this->fs->getAssessmentFromChart($id);
-		return $data;
-	}
+    return $data;
+  }
 
-	public function getCommonAssessmentFromChartByID(Request $request, $id) {
-		$data = \DB::table('functional_states as fs')
-			->where('fs.user_id', $id)
-			->join('physical_fitnesses as ps', function ($join) {
-				$join
-					->on([
-						['fs.user_id', 'ps.user_id'],
-						['fs.semester', 'ps.semester']
-					]);
-			})
-			->select('fs.semester as semester', 'fs.count_tests as fs_count_tests', 'ps.count_tests as ps_count_tests', 'fs.sum_scores as fs_sum_scores', 'ps.sum_scores as ps_sum_scores')
-			->get();
+  public function getCommonAssessmentFromChartByID(Request $request, $id)
+  {
+    $data = DB::table('functional_states as fs')
+      ->where('fs.user_id', $id)
+      ->join('physical_fitnesses as ps', function ($join) {
+        $join
+          ->on([
+            ['fs.user_id', 'ps.user_id'],
+            ['fs.semester', 'ps.semester']
+          ]);
+      })
+      ->select('fs.semester as semester', 'fs.count_tests as fs_count_tests', 'ps.count_tests as ps_count_tests', 'fs.sum_scores as fs_sum_scores', 'ps.sum_scores as ps_sum_scores')
+      ->get();
 
-			$semesters = [
-				'semester_0',
-				'semester_1',
-				'semester_2',
-				'semester_3',
-				'semester_4',
-				'semester_5',
-				'semester_6'
-			];
-	
-			$default = [
-				'assessment' => null
-			];
+    $semesters = [
+      'semester_0',
+      'semester_1',
+      'semester_2',
+      'semester_3',
+      'semester_4',
+      'semester_5',
+      'semester_6'
+    ];
 
-			$data = $data->map( function ($value, $key) {
-				$amount_tests = $value->fs_count_tests + $value->ps_count_tests;
-				$assessment_level = AssessmentLevel::getAssessmentLevelPoint($amount_tests, $value->fs_sum_scores + $value->ps_sum_scores);
-				$common_level = $assessment_level['level'];
-				$common_assessment = $assessment_level['assessment'];
-				return [
-					'semester' => $value->semester,
-					'assessment' => $common_assessment
-				];
-			} );
+    $default = [
+      'assessment' => null
+    ];
 
-			$data = $data->chart($semesters, $default)->transpose();
-			
-			return $data;
-	}
+    $data = $data->map(function ($value, $key) {
+      $amount_tests = $value->fs_count_tests + $value->ps_count_tests;
+      $assessment_level = AssessmentLevel::getAssessmentLevelPoint($amount_tests, $value->fs_sum_scores + $value->ps_sum_scores);
+      $common_level = $assessment_level['level'];
+      $common_assessment = $assessment_level['assessment'];
+      return [
+        'semester' => $value->semester,
+        'assessment' => $common_assessment
+      ];
+    });
+
+    $data = $data->chart($semesters, $default)->transpose();
+
+    return $data;
+  }
 }
