@@ -94,7 +94,7 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::delete('/messages', 'MessageController@delete');
 
   // Files
-  Route::get('files/{type}/{id?}', 'FileController@index');
+  Route::get('files/{id?}', 'FileController@index');
   Route::post('files/add', 'FileController@store');
   Route::post('files/edit/{id}', 'FileController@edit');
   Route::delete('files/delete/{id}', 'FileController@destroy');
