@@ -22,10 +22,15 @@
 <script>
     export default {
         name: 'modal',
-        props: [ 'modalId', 'closeHandle' ],
+        props: [ 'modalId', 'hiddenHandler', 'showHandler' ],
 
         mounted() {
-          $('#' + this.modalId).on('hidden.bs.modal', this.closeHandle);
+          if (this.showHandler) {
+            $('#' + this.modalId).on('show.bs.modal', this.showHandler);
+          }
+          if (this.hiddenHandler) {
+            $('#' + this.modalId).on('hidden.bs.modal', this.hiddenHandler);
+          }
         }
     }
 </script>

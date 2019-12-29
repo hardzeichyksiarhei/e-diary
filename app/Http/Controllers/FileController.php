@@ -58,13 +58,14 @@ class FileController extends Controller
         }
         return response()->json(false);
     }
+
     /**
      * Edit specific file
      * @param  integer  $id      File Id
      * @param  Request $request  Request with form data: filename
      * @return boolean           True if success, otherwise - false
      */
-    public function edit($id, Request $request)
+    public function edit(Request $request, $id)
     {
         $file = File::where('id', $id)->where('user_id', Auth::id())->first();
         if ($file->name == $request['name']) {
@@ -85,6 +86,17 @@ class FileController extends Controller
         }
         return response()->json(false);
     }
+
+     /**
+     * Share file
+     * @param  Request $request Request with form data: filename and file info
+     * @return boolean          True if success, otherwise - false
+     */
+    public function share(Request $request)
+    {
+        # code...
+    }
+
     /**
      * Delete file from disk and database
      * @param  integer $id  File Id

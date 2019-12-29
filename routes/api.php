@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::get('/user/{id}', function (Request $request, $id) {
     return \App\User::find($id);
   })->where('id', '[0-9]+');
-  Route::get('user/search', 'UserController@searchUsers');
+  Route::get('user/search/{role?}', 'UserController@searchUsers');
   Route::get('user/teacher', 'UserController@getTeachers');
   Route::get('user/student/paginate', 'UserController@getStudentsPaginate');
   Route::get('user/student/by-teacher-id/{id}', 'UserController@getStudentsByTeacherID');
@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::get('files/{id?}', 'FileController@index');
   Route::post('files/add', 'FileController@store');
   Route::post('files/edit/{id}', 'FileController@edit');
+  Route::post('files/share', 'FileController@share');
   Route::delete('files/delete/{id}', 'FileController@destroy');
 });
 

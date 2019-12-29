@@ -39,12 +39,22 @@ class UserController extends Controller
 		return User::where('role', 'teacher')->get();
 	}
 
-	public function searchUsers( Request $request )
+	public function searchUsers( Request $request, $role = null )
 	{
-		return User::where('email', 'LIKE', "%$request->term%")
-		->orWhere('name', 'LIKE', "%$request->term%")
-		->paginate(10);
-	}
+    $query = User::query();
+    if (!is_null($role)) {
+      $query = $query->where('role', $role);
+    }
+
+    $query = $query->where(function($query) use ($request) {
+      $query->where('email', 'LIKE', "%$request->term%");
+      $query->orWhere('name', 'LIKE', "%$request->term%");
+    });
+
+    $response = $query->paginate(10);
+
+    return response()->json($response);
+  }
 
 	public function getStudentsByTeacherID( Request $request, $id ) {
 		$students_ids = ProfileStudent::where('teacher_id', $id)->pluck('user_id');

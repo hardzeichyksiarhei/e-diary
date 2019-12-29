@@ -77,7 +77,7 @@
                   <td class="options">
                     <div class="btn-group">
                       <a
-                        class="btn btn-sm btn-success w-50"
+                        class="btn btn-sm btn-success w-40"
                         title="Save"
                         :href="domainURL + '/documents/' + user.email.split('@')[0] + '_' + user.id + '/' + file.type + '/' + file.tmp_name + '.' + file.extension"
                         :download="file.name"
@@ -86,7 +86,16 @@
                         <i class="fa fa-save fa-fw"></i>
                       </a>
                       <button
-                        class="btn btn-sm btn-danger w-50 user-delete-btn"
+                        class="btn btn-sm btn-primary w-40"
+                        title="Share"
+                        data-toggle="modal"
+                        data-target="#share-file"
+                        @click="prepareToShare(file)"
+                      >
+                        <i class="fa fa-share fa-fw"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger w-40 user-delete-btn"
                         title="Delete"
                         data-toggle="modal"
                         data-target="#remove-file"
@@ -111,7 +120,31 @@
       </div>
     </div>
 
-    <modal :modal-id="'remove-file'" :close-handle="cancelDeleting">
+    <modal :modal-id="'share-file'" :hidden-handler="cancelSharing">
+      <template v-slot:title>Открыть доступ к файлу "{{ sharingFile.name }}.{{ sharingFile.extension }}"</template>
+      <template
+        v-slot:body
+      >
+        <select2 id="mailbox-recipients" class="form-control select2"
+          v-model="sharingUsers"
+          :url="'/api/user/search/student'"
+          multiple="multiple"
+        >
+        </select2>
+      </template>
+      <template v-slot:footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          :disabled="sharingUsers.length == 0"
+          @click="shareFile()"
+        >Сохранить</button>
+      </template>>
+    </modal>
+
+    <modal :modal-id="'remove-file'" :hidden-handler="cancelDeleting">
       <template v-slot:title>Удалить файл</template>
       <template
         v-slot:body
@@ -155,6 +188,9 @@ export default {
 
       editingFile: {},
       deletingFile: {},
+      sharingFile: {},
+
+      sharingUsers: [],
 
       errors: []
     };
@@ -276,6 +312,22 @@ export default {
           this.showNotification(error.response.data.message, false);
         }
       }
+    },
+
+    prepareToShare(file) {
+      this.sharingFile = file;
+    },
+
+    cancelSharing() {
+      this.sharingFile = {};
+      this.sharingUsers = [];
+    },
+
+    async shareFile() {
+      if (!this.sharingUsers.length) return;
+
+      console.log(this.sharingUsers);
+      console.log(this.sharingFile);
     },
 
     showNotification(text, success) {
