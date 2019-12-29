@@ -24,16 +24,17 @@ class PhysicalFitnessRequest extends FormRequest
     public function rules()
     {
         return [
-          'long_jump' => 'numeric|nullable',
-          'torso_inclination' => 'numeric|nullable',
-          'run_shuttle' => 'numeric|nullable',
-          'press' => 'numeric|nullable',
-          'run_short' => 'numeric|nullable',
-          'push_up' => 'numeric|nullable',
-          'run_long' => 'numeric|nullable',
-          'pull_up' => 'numeric|nullable',
-          'swimming_s' => 'numeric|nullable',
-          'swimming_m' => 'numeric|nullable'
+            'age' => 'numeric|required',
+            'long_jump' => 'numeric|nullable',
+            'torso_inclination' => 'numeric|nullable',
+            'run_shuttle' => 'numeric|nullable',
+            'press' => 'numeric|nullable',
+            'run_short' => 'numeric|nullable',
+            'push_up' => 'numeric|nullable',
+            'run_long' => 'numeric|nullable',
+            'pull_up' => 'numeric|nullable',
+            'swimming_s' => 'numeric|nullable',
+            'swimming_m' => 'numeric|nullable'
         ];
     }
 }

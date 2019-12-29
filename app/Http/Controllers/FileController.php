@@ -16,15 +16,14 @@ class FileController extends Controller
      * @param  integer $id   File Id
      * @return object        Files list, JSON
      */
-    public function index($type, $id = null)
+    public function index($id = null)
     {
         $model = new File();
         if (!is_null($id)) {
             $response = $model::findOrFail($id);
         } else {
-            $records_per_page = ($type == 'image') ? 8 : 12;
-            $files = $model::where('type', $type)
-                ->where('user_id', Auth::id())
+            $records_per_page = 10;
+            $files = $model::where('user_id', Auth::id())
                 ->orderBy('id', 'desc')->paginate($records_per_page);
         }
         return response()->json($files);

@@ -47,11 +47,11 @@ class PhysicalFitnessController extends Controller
 
 		$gender = $user->profile->gender;
 
-		$birthday = $user->profile->birthday;
+		$birthday = $request->age || $user->profile->birthday;
 
-        $age = self::calculateAge($birthday);
+    $age = self::calculateAge($birthday);
 
-        $data = $request->toArray();
+    $data = $request->toArray();
 
 		// Прыжок в длину с места, см
 		$data['long_jump_point'] = $this->dispatch( new LongJump($gender, $age, $request->long_jump) );
