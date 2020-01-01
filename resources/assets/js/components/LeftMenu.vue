@@ -43,9 +43,6 @@
               <span>Документы</span>
             </a>
           </router-link>
-          <!-- <router-link tag="li" title="Рекомендация" :to="{ name: 'advice' }" active-class="active">
-                    <a><i class="fa fa-chain"></i> <span>Рекомендация</span></a>
-          </router-link>-->
         </template>
         <template v-if="check && user.role === 'admin'">
           <li class="header">Администратор</li>
@@ -156,6 +153,17 @@
             <a>
               <i class="fa fa-area-chart"></i>
               <span>Статистическая обработка</span>
+            </a>
+          </router-link>
+          <router-link
+            tag="li"
+            title="Доступные файлы"
+            :to="{ name: 'files.share' }"
+            active-class="active"
+          >
+            <a>
+              <i class="fa fa-files-o"></i>
+              <span>Доступные файлы</span>
             </a>
           </router-link>
         </template>

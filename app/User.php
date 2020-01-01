@@ -23,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
 	 * @var array
 	 */
 	protected $fillable = [
-			'first_name', 'last_name', 'name', 'email', 'password', 'role'
+		'first_name', 'last_name', 'name', 'email', 'password', 'role'
 	];
 
 	/**
@@ -32,7 +32,7 @@ class User extends Authenticatable implements JWTSubject
 	 * @var array
 	 */
 	protected $hidden = [
-			'password', 'remember_token',
+		'password', 'remember_token',
 	];
 
 	/**
@@ -41,7 +41,7 @@ class User extends Authenticatable implements JWTSubject
 	 * @var array
 	 */
 	protected $appends = [
-			'photo_url', 'profile', 'age'
+		'photo_url', 'profile', 'age'
 	];
 
 	/**
@@ -51,8 +51,8 @@ class User extends Authenticatable implements JWTSubject
 	 */
 	public function getPhotoUrlAttribute()
 	{
-			return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
-  }
+		return 'https://www.gravatar.com/avatar/' . md5(strtolower($this->email)) . '.jpg?s=200&d=mm';
+	}
 
 	public function getProfileAttribute()
 	{
@@ -87,7 +87,7 @@ class User extends Authenticatable implements JWTSubject
 	 */
 	public function oauthProviders()
 	{
-			return $this->hasMany(OAuthProvider::class);
+		return $this->hasMany(OAuthProvider::class);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class User extends Authenticatable implements JWTSubject
 	 */
 	public function sendPasswordResetNotification($token)
 	{
-			$this->notify(new ResetPasswordNotification($token));
+		$this->notify(new ResetPasswordNotification($token));
 	}
 
 	/**
@@ -106,7 +106,7 @@ class User extends Authenticatable implements JWTSubject
 	 */
 	public function getJWTIdentifier()
 	{
-			return $this->getKey();
+		return $this->getKey();
 	}
 
 	/**
@@ -114,10 +114,11 @@ class User extends Authenticatable implements JWTSubject
 	 */
 	public function getJWTCustomClaims()
 	{
-			return [];
+		return [];
 	}
 
-	public function hasProfileActive() {
+	public function hasProfileActive()
+	{
 		if (!$this->has_profile) $this->has_profile = 1;
 		$this->save();
 	}
@@ -130,10 +131,10 @@ class User extends Authenticatable implements JWTSubject
 		static::deleting(function ($user) {
 			if ($user->role !== 'student') {
 				$user_dir = explode('@', $user->email)[0] . '_' . $user->id;
-      			Storage::disk('documents')->deleteDirectory($user_dir);
+				Storage::disk('documents')->deleteDirectory($user_dir);
 			}
 		});
-  }
+	}
 
 	/**
 	 * Relationships
@@ -156,20 +157,25 @@ class User extends Authenticatable implements JWTSubject
 	public function physicalFitnesses()
 	{
 		return $this->hasMany('App\PhysicalFitness');
-  }
+	}
 
-  public function messages()
+	public function messages()
 	{
 		return $this->hasMany('App\Message', 'sender_id');
-  }
+	}
 
 	public function messagesStatus()
 	{
 		return $this->hasMany('App\MessagesStatus');
-  }
+	}
 
-  public function files()
-  {
-      return $this->hasMany('App\File');
-  }
+	public function files()
+	{
+		return $this->hasMany('App\File');
+	}
+
+	public function share_files()
+	{
+		return $this->belongsToMany('App\File', 'file_user');
+	}
 }

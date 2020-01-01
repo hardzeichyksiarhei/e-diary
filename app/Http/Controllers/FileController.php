@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\File;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -16,16 +17,12 @@ class FileController extends Controller
      * @param  integer $id   File Id
      * @return object        Files list, JSON
      */
-    public function index($id = null)
+    public function index(Request $request)
     {
         $model = new File();
-        if (!is_null($id)) {
-            $response = $model::findOrFail($id);
-        } else {
-            $records_per_page = 10;
-            $files = $model::where('user_id', Auth::id())
-                ->orderBy('id', 'desc')->paginate($records_per_page);
-        }
+        $records_per_page = 10;
+        $files = $model::where('user_id', Auth::id())
+            ->orderBy('id', 'desc')->paginate($records_per_page);
         return response()->json($files);
     }
 
@@ -94,7 +91,39 @@ class FileController extends Controller
      */
     public function share(Request $request)
     {
-        # code...
+        $file = File::find($request->file_id);
+
+        $attach = $file->share_users()->syncWithoutDetaching($request->user_ids);
+
+        return response()->json($attach);
+    }
+
+    /**
+     * Get share files by auth user
+     */
+    public function getShareFiles(Request $request)
+    {
+        $records_per_page = 10;
+        $share_files = $request->user()->share_files()->paginate($records_per_page);
+        return response()->json($share_files);
+    }
+
+    /**
+     * Get share users
+     */
+    public function getShareUsers(Request $request, $file_id)
+    {
+        $users = File::find($file_id)->share_users;
+        return response()->json($users);
+    }
+
+     /**
+     * Delete share user
+     */
+    public function deleteShareUser(Request $request, $file_id, $user_id)
+    {
+        $detach = File::find($file_id)->share_users()->detach($user_id);
+        return response()->json($detach);
     }
 
     /**

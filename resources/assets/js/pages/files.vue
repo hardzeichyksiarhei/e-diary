@@ -46,7 +46,6 @@
               <thead>
                 <tr>
                   <th id="name">Название</th>
-                  <th id="birthday">Расширение</th>
                   <th id="created_at">Дата добавления</th>
                   <th>Опции</th>
                 </tr>
@@ -64,7 +63,7 @@
                       <img v-if="file.extension == 'xlsx'" :src="domainURL + '/images/excel.png'" alt="Document excel" class="document_thumb document_excel">
                       <img v-if="['jpg', 'jpeg', 'png', 'gif'].includes(file.extension)" :src="domainURL + '/images/image.png'" alt="Document image" class="document_thumb document_image">
                       <p v-if="file.id !== editingFile.id">
-                        {{ file.name }} <a href="javascript:void(0)" @click="editFile(file)"><small>Изменить</small></a>
+                        {{ file.name }}.{{ file.extension }} <a href="javascript:void(0)" @click="editFile(file)"><small>Изменить</small></a>
                       </p>
                       <p v-else>
                         <input class="file-edit-name" @keyup.enter="endEditing(editingFile)" type="text" :placeholder="editingFile.name" v-model="editingFile.name">
@@ -72,7 +71,6 @@
                       </p>
                     </div>
                   </td>
-                  <td>{{ file.extension }}</td>
                   <td>{{ file.created_at }}</td>
                   <td class="options">
                     <div class="btn-group">
@@ -120,29 +118,7 @@
       </div>
     </div>
 
-    <modal :modal-id="'share-file'" :hidden-handler="cancelSharing">
-      <template v-slot:title>Открыть доступ к файлу "{{ sharingFile.name }}.{{ sharingFile.extension }}"</template>
-      <template
-        v-slot:body
-      >
-        <select2 id="mailbox-recipients" class="form-control select2"
-          v-model="sharingUsers"
-          :url="'/api/user/search/student'"
-          multiple="multiple"
-        >
-        </select2>
-      </template>
-      <template v-slot:footer>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-dismiss="modal"
-          :disabled="sharingUsers.length == 0"
-          @click="shareFile()"
-        >Сохранить</button>
-      </template>>
-    </modal>
+    <sharing-file :file="sharingFile" @cancel-sharing="cancelSharing"></sharing-file>
 
     <modal :modal-id="'remove-file'" :hidden-handler="cancelDeleting">
       <template v-slot:title>Удалить файл</template>
@@ -168,13 +144,14 @@ import { mapGetters } from "vuex";
 import { domainURL } from "~/config";
 
 import Modal from "~/components/Modal";
+import SharingFile from "~/components/files/SharingFile";
 
 export default {
   middleware: ["auth", "not-student"],
 
   name: "files",
 
-  components: { Modal },
+  components: { Modal, SharingFile },
 
   data() {
     return {
@@ -189,8 +166,6 @@ export default {
       editingFile: {},
       deletingFile: {},
       sharingFile: {},
-
-      sharingUsers: [],
 
       errors: []
     };
@@ -207,18 +182,10 @@ export default {
   },
 
   methods: {
-    isActive(tabItem) {
-      return this.activeTab === tabItem;
-    },
-
-    setActiveTab(tabItem) {
-      this.activeTab = tabItem;
-    },
-
     async fetchFiles(page = 1) {
       try {
         this.$store.dispatch("loading/changeLoading");
-        const { data } = await axios.get("api/files/?page=" + page);
+        const { data } = await axios.get("/api/files/?page=" + page);
         this.files = data;
       } catch (error) {
         console.error(error);
@@ -234,7 +201,7 @@ export default {
       this.formData.append("file", this.attachment);
 
       try {
-        await axios.post("api/files/add", this.formData, {
+        await axios.post("/api/files/add", this.formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
@@ -268,7 +235,7 @@ export default {
 
     async deleteFile() {
       try {
-        await axios.delete("api/files/delete/" + this.deletingFile.id);
+        await axios.delete("/api/files/delete/" + this.deletingFile.id);
         this.showNotification("Файл успешно удален!", true);
       } catch (error) {
         this.errors = error.response.data.errors;
@@ -299,7 +266,7 @@ export default {
 
         try {
           const { data } = await axios.post(
-            "api/files/edit/" + file.id,
+            "/api/files/edit/" + file.id,
             formData
           );
 
@@ -320,14 +287,6 @@ export default {
 
     cancelSharing() {
       this.sharingFile = {};
-      this.sharingUsers = [];
-    },
-
-    async shareFile() {
-      if (!this.sharingUsers.length) return;
-
-      console.log(this.sharingUsers);
-      console.log(this.sharingFile);
     },
 
     showNotification(text, success) {

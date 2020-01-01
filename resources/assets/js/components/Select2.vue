@@ -17,7 +17,9 @@ export default {
     settings: {
       type: Object,
       default () {
-        return {}
+        return {
+          width: '100%'
+        }
       }
     },
     value: {
@@ -76,7 +78,6 @@ export default {
       .select2({
         ...selectAttr,
         ...this.settings,
-        width: '100%',
         escapeMarkup (markup) { return markup },
         templateResult: this.templateResult,
         templateSelection: this.templateSelection
@@ -92,6 +93,7 @@ export default {
     url (value) {
       this.ajaxOptions.url = this.url
       $(this.$el).select2({
+        ...this.settings,
         ajax: this.ajaxOptions,
         width: '100%'
       })
@@ -102,6 +104,7 @@ export default {
     options: function (options) {
       // update options
       $(this.$el).select2({
+        ...this.settings,
         data: options,
         width: '100%'
       })

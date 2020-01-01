@@ -94,11 +94,17 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::delete('/messages', 'MessageController@delete');
 
   // Files
-  Route::get('files/{id?}', 'FileController@index');
+  Route::get('files', 'FileController@index');
   Route::post('files/add', 'FileController@store');
   Route::post('files/edit/{id}', 'FileController@edit');
-  Route::post('files/share', 'FileController@share');
   Route::delete('files/delete/{id}', 'FileController@destroy');
+
+  // Share files
+  Route::post('files/share', 'FileController@share');
+  Route::get('files/share', 'FileController@getShareFiles');
+  Route::get('files/share/{file_id}/users', 'FileController@getShareUsers');
+  Route::delete('files/share/{file_id}/users/{user_id}', 'FileController@deleteShareUser');
+  
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

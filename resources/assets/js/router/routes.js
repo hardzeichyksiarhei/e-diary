@@ -9,8 +9,6 @@ const Dashboard = () => import('~/pages/dashboard')
 const Students = () => import('~/pages/students')
 const Staffs = () => import('~/pages/staffs')
 
-const Advice = () => import('~/pages/teacher/advice')
-
 const Indicators = () => import('~/pages/indicators')
 
 const Statistics = () => import('~/pages/statistics')
@@ -31,6 +29,7 @@ const ProfileStaff = () => import('~/pages/profile/staff')
 const ProfileStudent = () => import('~/pages/profile/student')
 
 const Files = () => import('~/pages/files')
+const ShareFiles = () => import('~/pages/share-files')
 
 const Admin = () => import('~/pages/admin')
 const AdminPrimary = () => import('~/pages/admin/primary')
@@ -49,7 +48,6 @@ export default [
 
   // Teachers Panel
   { path: '/teacher/students', name: 'teacher.students', component: Students, meta: { breadcrumb: 'Студенты' }},
-  { path: '/advice', name: 'advice', component: Advice, meta: { breadcrumb: 'Рекомендации' }},
 
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { breadcrumb: 'Панель управления' }},
   { path: '/indicators', name: 'indicators', component: Indicators, meta: { breadcrumb: 'Измерения и Показатели' }},
@@ -80,6 +78,7 @@ export default [
     { path: 'bulk-add', name: 'admin.bulk-add', component: AdminBulkAdd, meta: { breadcrumb: 'Массовое добавление' }},
   ] },
   { path: '/files', name: 'files', component: Files, meta: { breadcrumb: 'Файлы' }},
+  { path: '/files/share', name: 'files.share', component: ShareFiles, meta: { breadcrumb: 'Доступные файлы' }},
 
   { path: '*', component: require('~/pages/errors/404') }
 ]
