@@ -2,22 +2,31 @@
     <form @submit.prevent="update" @keydown="form.onKeydown($event)">
         <!-- Name -->
         <div class="form-row">
-            <div class="col-md-6 col-xs-12">
+            <div class="col-md-4 col-xs-12">
                 <div class="form-group" :class="{ 'has-error': form.errors.has('first_name') }">
                     <label for="first_name">Имя <b class="text-danger">*</b></label>
-                    <input class="form-control" id="first_name" type="text" name="first_name" placeholder="Enter first name"
+                    <input class="form-control" id="first_name" type="text" name="first_name" placeholder="Введите имя"
                         v-model="form.first_name"
                     >
                     <has-error :form="form" field="first_name"></has-error>
                 </div>
             </div>
-            <div class="col-md-6 col-xs-12">
+            <div class="col-md-4 col-xs-12">
                 <div class="form-group" :class="{ 'has-error': form.errors.has('last_name') }">
                     <label for="last_name">Фамилия <b class="text-danger">*</b></label>
-                    <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Enter last name"
+                    <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Введите фамилию"
                         v-model="form.last_name"
                     >
                     <has-error :form="form" field="last_name"></has-error>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group" :class="{ 'has-error': form.errors.has('patronymic_name') }">
+                    <label for="patronymic_name">Отчество</label>
+                    <input class="form-control" id="patronymic_name" type="text" name="patronymic_name" placeholder="Введите отчество"
+                        v-model="form.patronymic_name"
+                    >
+                    <has-error :form="form" field="patronymic_name"></has-error>
                 </div>
             </div>
         </div>
@@ -49,6 +58,7 @@
             form: new Form({
                 first_name: '',
                 last_name: '',
+                patronymic_name: '',
                 email: ''
             })
         }),

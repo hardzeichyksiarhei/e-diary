@@ -26,7 +26,8 @@ class ProfileController extends Controller
         return tap($user)->update([
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
-            'name' => $request['first_name'] . ' ' . $request['last_name'],
+            'patronymic_name' => $request['patronymic_name'],
+            'name' => $request['last_name'] . ' ' . $request['first_name'] . ( $request['patronymic_name'] ? ' ' . $request['patronymic_name'] : '' ),
             'email' => $request['email']
         ]);
     }

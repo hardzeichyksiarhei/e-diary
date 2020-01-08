@@ -10,7 +10,7 @@
                   <form @submit.prevent="fetchStaffs">
                     <div class="form-row">
                       <div class="col-md-4 col-xs-12 mb-3">
-                        <label for="name">Имя</label>
+                        <label for="name">Ф.И.О.</label>
                         <input class="form-control" id="name" type="text" name="name" placeholder="Любое имя"
                             v-model="search.name"
                         >
@@ -78,7 +78,7 @@
                             <td><a href="javascript:void(0)" @click.prevent="$router.push({
                               name: 'profile.staff',
                               params: { id: staff.id }
-                            })">{{ staff.name }}</a></td>
+                            })">{{ staff | full_name_short }}</a></td>
                             <td>{{ staff.email }}</td>
                             <td>{{ staff.role == 'admin' ? 'Администратор' : 'Преподаватель' }}</td>
                             <td>{{ staff.profile.position || 'Не указано' }}</td>
@@ -162,6 +162,17 @@
       selectedCount () {
         if (this.selectStaffsID.length < 5) return `Выбрано ${this.selectStaffsID.length} студента`
         else return `Выбрано ${this.selectStaffsID.length} студентов`
+      }
+    },
+
+    filters: {
+      full_name_short(user) {
+        let { first_name, last_name, patronymic_name } = user;
+        let res = last_name + ' ' + first_name;
+        if (patronymic_name.length) {
+          res = last_name + ' ' + first_name[0] + '. ' + patronymic_name[0] + '.';
+        }
+        return res;
       }
     },
 

@@ -20,7 +20,7 @@
                 <!-- The user image in the navbar-->
                 <img :src="user.photo_url" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">{{ user.name }}</span>
+                <span class="hidden-xs">{{ full_name }}</span>
               </a>
               <ul class="dropdown-menu animated-dropdown-menu">
                 <!-- The user image in the menu -->
@@ -28,7 +28,7 @@
                   <img :src="user.photo_url" class="img-circle" alt="User Image">
 
                   <p>
-                    {{ user.name }} - {{ user.role | transRole }}
+                    {{ full_name_short }} - {{ user.role | transRole }}
                     <small>Зарегистрирован {{ user.created_at }}</small>
                   </p>
                 </li>
@@ -79,12 +79,28 @@ export default {
     MessagesNotifications
   },
 
-  computed: mapGetters({
-    user: 'auth/user',
-    check: 'auth/check',
-    notifications: 'messages/notifications',
-    loading: 'loading/loading'
-  }),
+  computed:{
+    ...mapGetters({
+      user: 'auth/user',
+      check: 'auth/check',
+      // notifications: 'messages/notifications',
+      loading: 'loading/loading'
+    }),
+    full_name() {
+      let { first_name, last_name, patronymic_name } = this.user;
+      let res = last_name + ' ' + first_name;
+      if (patronymic_name.length) res += ' ' + patronymic_name;
+      return res;
+    },
+    full_name_short() {
+      let { first_name, last_name, patronymic_name } = this.user;
+      let res = last_name + ' ' + first_name;
+      if (patronymic_name.length) {
+        res = last_name + ' ' + first_name[0] + '. ' + patronymic_name[0] + '.';
+      }
+      return res;
+    }
+},
 
   filters: {
     transRole (value) {
