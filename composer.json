@@ -47,6 +47,15 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
+        ],        
+        "cmd_install_01": [            
+            "touch '.env' ",
+            "cp '.env.example' '.env'",
+            "php artisan key:generate",  
+            "php artisan migrate",    
+            "php artisan jwt:secret", 
+            "php artisan db:seed",            
+            "php artisan optimize"
         ]
     },
     "config": {
