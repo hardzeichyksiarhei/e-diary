@@ -26,7 +26,7 @@ class File extends Model
     'user'
   ];
 
-  public static $image_ext = ['jpg', 'jpeg', 'png', 'gif'];
+  public static $image_ext = ['jpg', 'jpeg', 'png', 'gif', 'jfif'];
   public static $document_ext = ['doc', 'docx', 'pdf', 'odt', 'xlsx'];
 
   /**

@@ -61,7 +61,7 @@
                         v-if="file.extension == 'pdf'" 
                         :src="domainURL + '/images/pdf.png'">
                       <img v-if="file.extension == 'xlsx'" :src="domainURL + '/images/excel.png'" alt="Document excel" class="document_thumb document_excel">
-                      <img v-if="['jpg', 'jpeg', 'png', 'gif'].includes(file.extension)" :src="domainURL + '/images/image.png'" alt="Document image" class="document_thumb document_image">
+                      <img v-if="file.type === 'image'" :src="domainURL + '/images/image.png'" alt="Document image" class="document_thumb document_image">
                       <p v-if="file.id !== editingFile.id">
                         {{ file.name }}.{{ file.extension }} <a href="javascript:void(0)" @click="editFile(file)"><small>Изменить</small></a>
                       </p>

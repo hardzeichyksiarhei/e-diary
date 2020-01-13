@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\File;
-use App\User;
+use App\Http\Requests\FileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -31,13 +31,8 @@ class FileController extends Controller
      * @param  Request $request Request with form data: filename and file info
      * @return boolean          True if success, otherwise - false
      */
-    public function store(Request $request)
+    public function store(FileRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'file' => 'required|file|mimes:' . File::getAllExtensions() . '|max:' . File::getMaxSize()
-        ]);
-
         $file = new File();
         $uploaded_file = $request->file('file');
         $original_ext = $uploaded_file->getClientOriginalExtension();
