@@ -1,6 +1,6 @@
 <template>
   <div class="initial-data-wrapper">
-    <h4 class="mb-3">Физическая подготовленность</h4>
+    <h4 class="mb-3">Физическая подготовленность (ФП)</h4>
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li :class="{ 'active': activeSemester === 0 }">

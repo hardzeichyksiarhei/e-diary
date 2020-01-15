@@ -25,7 +25,7 @@
                 <div class="small-box bg-teal">
                     <div class="small-box-body">
                         <div class="inner">
-                            <h3><i class="fa fa-user-secret"></i> Преподаватели</h3>
+                            <h3><i class="fa fa-user-secret"></i> Сотрудники</h3>
 
                             <p>Измени свои данные</p>
                         </div>
@@ -33,7 +33,7 @@
                             <i class="fa fa-user"></i>
                         </div> -->
                     </div>
-                    <router-link class="small-box-footer text-uppercase" :to="{ name: 'admin.teachers' }">
+                    <router-link class="small-box-footer text-uppercase" :to="{ name: 'admin.staffs' }">
                         Перейти <i class="fa fa-arrow-circle-right"></i>
                     </router-link>
                 </div>

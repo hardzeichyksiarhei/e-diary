@@ -120,7 +120,7 @@ class FunctionalStateController extends Controller
 
   public function getСalculationFromTableByID(Request $request, $id)
   {
-    $data = $this->fs->getCalculate($id);
+    $data = $this->fs->getCalculate($id, false);
     return $data;
   }
 
@@ -133,50 +133,6 @@ class FunctionalStateController extends Controller
   public function getAssessmentFromChartByID(Request $request, $id)
   {
     $data = $this->fs->getAssessmentFromChart($id);
-    return $data;
-  }
-
-  public function getCommonAssessmentFromChartByID(Request $request, $id)
-  {
-    $data = DB::table('functional_states as fs')
-      ->where('fs.user_id', $id)
-      ->join('physical_fitnesses as ps', function ($join) {
-        $join
-          ->on([
-            ['fs.user_id', 'ps.user_id'],
-            ['fs.semester', 'ps.semester']
-          ]);
-      })
-      ->select('fs.semester as semester', 'fs.count_tests as fs_count_tests', 'ps.count_tests as ps_count_tests', 'fs.sum_scores as fs_sum_scores', 'ps.sum_scores as ps_sum_scores')
-      ->get();
-
-    $semesters = [
-      'semester_0',
-      'semester_1',
-      'semester_2',
-      'semester_3',
-      'semester_4',
-      'semester_5',
-      'semester_6'
-    ];
-
-    $default = [
-      'assessment' => null
-    ];
-
-    $data = $data->map(function ($value, $key) {
-      $amount_tests = $value->fs_count_tests + $value->ps_count_tests;
-      $assessment_level = AssessmentLevel::getAssessmentLevelPoint($amount_tests, $value->fs_sum_scores + $value->ps_sum_scores);
-      $common_level = $assessment_level['level'];
-      $common_assessment = $assessment_level['assessment'];
-      return [
-        'semester' => $value->semester,
-        'assessment' => $common_assessment
-      ];
-    });
-
-    $data = $data->chart($semesters, $default)->transpose();
-
     return $data;
   }
 }

@@ -3,11 +3,10 @@
     <div class="row">
       <div class="col-md-3 col-sm-4">
         <!-- Profile Image -->
-        <image-student-box :user="user"/>
+        <image-student-box :user="user" />
 
         <!-- About Me Box -->
-        <about-me-student-box :user="user"/>
-
+        <about-me-student-box :user="user" />
       </div>
       <!-- /.col -->
       <div class="col-md-9 col-sm-8">
@@ -24,6 +23,9 @@
             </li>
             <li>
               <a href="#pf-charts" data-toggle="tab">ФП (графики)</a>
+            </li>
+            <li>
+              <a href="#ca" data-toggle="tab">Общая оценка ФР, ФС и ФП</a>
             </li>
           </ul>
           <div class="tab-content">
@@ -103,7 +105,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
@@ -117,7 +119,7 @@
                       />
                     </div>
                   </div>
-                </div>
+                </div>-->
               </div>
             </div>
             <!-- /.tab-pane -->
@@ -201,6 +203,72 @@
               </div>
             </div>
             <!-- /.tab-pane -->
+
+            <div class="tab-pane" id="ca">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-table"></i>Общая оценка ФР, ФС и ФП
+                      </h4>
+                      <div class="box-tools pull-right d-flex"></div>
+                    </div>
+                    <div class="box-body">
+                      <div class="table-responsive">
+                        <table class="table table-no-hover table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th>Показатели ФР и ФС</th>
+                              <th>Нач. 1 семестра</th>
+                              <th>1 семестр</th>
+                              <th>2 семестр</th>
+                              <th>3 семестр</th>
+                              <th>4 семестр</th>
+                              <th>5 семестр</th>
+                              <th>6 семестр</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <template v-if="commonAssessment">
+                              <tr v-for="ca in commonAssessment" :key="ca.id">
+                                <td>{{ ca.label }}</td>
+                                <td>{{ ca.semester_0 || '-' }}</td>
+                                <td>{{ ca.semester_1 || '-' }}</td>
+                                <td>{{ ca.semester_2 || '-' }}</td>
+                                <td>{{ ca.semester_3 || '-' }}</td>
+                                <td>{{ ca.semester_4 || '-' }}</td>
+                                <td>{{ ca.semester_5 || '-' }}</td>
+                                <td>{{ ca.semester_6 || '-' }}</td>
+                              </tr>
+                            </template>
+                            <tr v-else>
+                              <td colspan="8" align="center">Данных нет</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h4 class="box-title">
+                        <i class="fa fa-fw fa-area-chart"></i>Общая оценка ФР, ФС и ФП
+                      </h4>
+                    </div>
+                    <div class="box-body">
+                      <common-assessment-bar-chart
+                        v-if="renderCAChart"
+                        :user-id="$route.params.id"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.tab-pane -->
           </div>
           <!-- /.tab-content -->
         </div>
@@ -216,15 +284,15 @@
 import axios from "axios";
 import { domainURL } from "~/config";
 
-import ImageStudentBox from '../../components/profile/ImageStudentBox'
-import AboutMeStudentBox from '../../components/profile/AboutMeStudentBox'
+import ImageStudentBox from "../../components/profile/ImageStudentBox";
+import AboutMeStudentBox from "../../components/profile/AboutMeStudentBox";
 
-import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart"
-import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart"
-import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart"
+import FunctionalStateAssessmentBarChart from "~/components/BarCharts/FunctionalStateAssessmentBarChart";
+import FunctionalStateBarChart from "~/components/BarCharts/FunctionalStateBarChart";
+import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBarChart";
 
-import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart"
-import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart"
+import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart";
+import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart";
 
 export default {
   middleware: ["auth", "not-student"],
@@ -234,7 +302,7 @@ export default {
   components: {
     ImageStudentBox,
     AboutMeStudentBox,
-	
+
     FunctionalStateAssessmentBarChart,
     FunctionalStateBarChart,
     CommonAssessmentBarChart,
@@ -247,6 +315,7 @@ export default {
     return {
       renderFSChart: false,
       renderPFChart: false,
+      renderCAChart: false,
       user: {
         name: "",
         role: "",
@@ -265,7 +334,8 @@ export default {
         }
       },
       functionalState: [],
-      physicalFitness: []
+      physicalFitness: [],
+      commonAssessment: []
     };
   },
 
@@ -277,12 +347,17 @@ export default {
     $('a[href="#pf-charts"]').on("shown.bs.tab", e => {
       this.renderPFChart = true;
     });
+
+    $('a[href="#ca"]').on("shown.bs.tab", e => {
+      this.renderCAChart = true;
+    });
   },
 
   created() {
     this.getUserByID();
     this.fetchFunctionalState();
     this.fetchPhysicalFitness();
+    this.fetchCommonAssessment();
   },
 
   filters: {
@@ -311,6 +386,13 @@ export default {
       );
 
       this.physicalFitness = data;
+    },
+    async fetchCommonAssessment() {
+      const { data } = await axios.get(
+        "/api/common/assessment/calculation/" + this.$route.params.id
+      );
+
+      this.commonAssessment = data;
     }
   }
 };

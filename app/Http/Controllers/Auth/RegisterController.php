@@ -63,7 +63,8 @@ class RegisterController extends Controller
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
-            'name' => $data['first_name'] . ' ' . $data['last_name'],
+            'patronymic_name' => $data['patronymic_name'],
+            'name' => $data['last_name'] . ' ' . $data['first_name'] . ( $data['patronymic_name'] ? ' ' . $data['patronymic_name'] : '' ),
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'role' => $data['role']
@@ -71,11 +72,6 @@ class RegisterController extends Controller
 
         if ($user['role'] == 'student') {
             $user->profileStudent()->create([]);
-
-            /*for ($i = 0; $i <= 6; $i++) {
-                $user->functionalStates()->create(['semester' => $i]);
-                $user->physicalFitnesses()->create(['semester' => $i]);
-            }*/
         }
         else
             $user->profileStaff()->create([]);

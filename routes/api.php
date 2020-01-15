@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
   // Users
   Route::post('/user', 'UserController@addUser');
+  Route::post('/user/bulk', 'UserController@addUserBulk');
   Route::get('/user', function (Request $request) {
     return $request->user();
   });
@@ -71,7 +72,6 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::get('functional-state/calculation/{userId}', 'FunctionalStateController@getСalculationFromTableByID');
   Route::get('functional-state/calculation/chart/points/{id}', 'FunctionalStateController@getСalculationPointsFromChartByID');
   Route::get('functional-state/chart/assessment/{id}', 'FunctionalStateController@getAssessmentFromChartByID');
-  Route::get('functional-state/chart/common/assessment/{id}', 'FunctionalStateController@getCommonAssessmentFromChartByID');
 
   // PhysicalFitness
   Route::get('physical-fitness/initial-data/{semester}', 'PhysicalFitnessController@getInitialData');
@@ -79,6 +79,10 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::get('physical-fitness/calculation/{userId}', 'PhysicalFitnessController@getСalculationFromTableByID');
   Route::get('physical-fitness/calculation/chart/points/{id}', 'PhysicalFitnessController@getСalculationPointsFromChartByID');
   Route::get('physical-fitness/chart/assessment/{id}', 'PhysicalFitnessController@getAssessmentFromChartByID');
+
+  // CommonAssessment
+  Route::get('common/assessment/chart/{id}', 'CommonAssessmentController@getCommonAssessmentFromChartByID');
+  Route::get('common/assessment/calculation/{id}', 'CommonAssessmentController@getCommonAssessmentFromTableByID');
 
   // Messages
   Route::get('messages/{id}', 'MessageController@getMessageByID')->where('id', '[0-9]+');

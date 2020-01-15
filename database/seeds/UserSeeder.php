@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
 			$admin1 = [
 				'first_name' => 'Сергей',
 				'last_name' => 'Гардейчик',
-				'name' => 'Сергей Гардейчик',
+				'name' => 'Гардейчик Сергей',
 				'email' => 'hardzeichyksiarhei@gmail.com',
 				'password' => Hash::make('123456'),
 				'role' => 'admin'
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
 			$teacher1 = [
 				'first_name' => 'Анна',
 				'last_name' => 'Кукель',
-				'name' => 'Анна Кукель',
+				'name' => 'Кукель Анна',
 				'email' => 'teacher@teacher.teacher',
 				'password' => Hash::make('123456'),
 				'role' => 'teacher'
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
 			$teacher2 = [
 				'first_name' => 'Иван',
 				'last_name' => 'Григоревич',
-				'name' => 'Иван Григоревич',
+				'name' => 'Григоревич Иван',
 				'email' => 'g28i02v55@mail.ru',
 				'password' => Hash::make('123456'),
 				'role' => 'teacher'

@@ -43,7 +43,7 @@ export default {
           yAxes: [{
             ticks: {
               max: 10,
-              min: 1,
+              min: 0,
               stepSize: 1
             }
           }]
@@ -60,7 +60,7 @@ export default {
     async fetchCommonAssessment () {
       try {
         const { data } = await axios.get(
-          `/api/functional-state/chart/common/assessment/${this.userId}`
+          `/api/common/assessment/chart/${this.userId}`
         )
 
         this.datacollection = {

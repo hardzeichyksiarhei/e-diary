@@ -35,7 +35,7 @@
                     >
                       <thead>
                         <tr>
-                          <th>Показатели ФР и ФС</th>
+                          <th>Заголовок</th>
                           <th>Нач. 1 семестра</th>
                           <th>1 семестр</th>
                           <th>2 семестр</th>
@@ -78,7 +78,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-12">
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
@@ -107,7 +107,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <!-- <div class="col-md-6 col-sm-12">
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
@@ -135,7 +135,7 @@
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <!-- /.tab-pane -->

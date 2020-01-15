@@ -39,6 +39,25 @@
                 </div>
             </div>
             <!-- ./col -->
+            <div class="col-lg-3 col-sm-6 col-xs-12">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                    <div class="small-box-body">
+                        <div class="inner">
+                            <h3><i class="fa fa-heartbeat"></i> ФР, ФС И ФП</h3>
+
+                            <p>*Сумма баллов, оценка и уровень показателей ФР, ФС И ФП</p>
+                        </div>
+                        <!-- <div class="icon">
+                            <i class="fa fa-cog"></i>
+                        </div> -->
+                    </div>
+                    <router-link class="small-box-footer text-uppercase" :to="{ name: 'statistics.common-assessment' }">
+                        Перейти <i class="fa fa-arrow-circle-right"></i>
+                    </router-link>
+                </div>
+            </div>
+            <!-- ./col -->
         </div>
     </div>
 </template>

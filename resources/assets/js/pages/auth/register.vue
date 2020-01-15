@@ -27,11 +27,18 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                     <div class="form-group" :class="{ 'has-error': form.errors.has('email') }">
                       <label for="email">E-mail <b class="text-danger">*</b></label>
                       <input class="form-control" id="email" type="email" placeholder="Введите E-mail" name="email" v-model="form.email">
                       <has-error :form="form" field="email"></has-error>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" :class="{ 'has-error': form.errors.has('patronymic_name') }">
+                      <label for="patronymic_name">Отчество</label>
+                      <input class="form-control" id="patronymic_name" type="patronymic_name" placeholder="Введите отчество" name="patronymic_name" v-model="form.patronymic_name">
+                      <has-error :form="form" field="patronymic_name"></has-error>
                     </div>
                   </div>
                 </div>
@@ -50,6 +57,7 @@
                     </div>
                   </div>
                 </div>
+                <p><b class="text-danger">*</b> – поля обязательные для заполнения.</p>
                 <div class="form-group">
                   <v-button class="btn btn-primary btn-block" :loading="form.busy">Регистрация</v-button>
                 </div>
@@ -82,6 +90,7 @@
           form: new Form({
               first_name: '',
               last_name: '',
+              patronymic_name: '',
               email: '',
               password: '',
               password_confirmation: '',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\ProfileStudent;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
@@ -17,7 +18,8 @@ class UserController extends Controller
     $user = User::create([
       'first_name' => $request['first_name'],
       'last_name' => $request['last_name'],
-      'name' => $request['first_name'] . ' ' . $request['last_name'],
+      'patronymic_name' => $request['patronymic_name'],
+      'name' => $request['last_name'] . ' ' . $request['first_name'] . ( $request['patronymic_name'] ? ' ' . $request['patronymic_name'] : '' ),
       'email' => $request['email'],
       'password' => bcrypt($request['password']),
       'role' => $request['role']
@@ -33,6 +35,78 @@ class UserController extends Controller
     }
     else
         $user->profileStaff()->create([]);
+  }
+
+  public function addUserBulk(Request $request) {
+    $users = $request->users;
+    $credentials = $request->only('role', 'password', 'password_confirmation');
+
+    $usersValid = array();
+    $usersNotValid = array();
+    $credentialsErrors = null;
+
+    // Validate credentials params
+    $validatorCredentialsData = Validator::make($credentials, [
+      'password' => 'required|min:6|confirmed',
+      'role' => 'required|in:admin,teacher,student'
+    ]);
+
+    if ($validatorCredentialsData->fails()) {
+      $credentialsErrors = $validatorCredentialsData->messages();
+    }
+
+    
+    foreach ($users as $key=>$user) {
+      $validatorUsersData = Validator::make($user, [
+        'first_name' => 'required|max:255',
+        'last_name' => 'required|max:255',
+        'email' => 'required|email|max:255|unique:users',
+      ], [
+        'first_name.required' => 'Необходимо указать "Имя"',
+        'last_name.required'  => 'Необходимо указать "Фамилию"',
+        'email.required'  => 'Необходимо указать "E-mail"',
+        'email.email'  => 'Необходимо указать корректный "E-mail"',
+        'email.unique'  => 'Такой "E-mail" уже существует',
+      ]);
+
+      $user['name'] = $user['last_name'] . ' ' . $user['first_name'] . ( $user['patronymic_name'] ? ' ' . $user['patronymic_name'] : '' );
+      if (!empty($credentialsErrors)) {
+        if (!$credentialsErrors->has('role')) $user['role'] = $credentials['role'];
+        if (!$credentialsErrors->has('password')) $user['password'] = bcrypt($credentials['password']);
+      } else {
+        $user['role'] = $credentials['role'];
+        $user['password'] = bcrypt($credentials['password']);
+      }
+
+      if ($validatorUsersData->fails()) {
+        $user['errors'] = $validatorUsersData->messages();
+        $user['position'] = $key + 1;
+        $usersNotValid[] = $user;
+      } else {
+        $usersValid[] = $user;
+      }
+    }
+
+    // Гавно
+    $response = true;
+    if (empty($credentialsErrors) && !empty($usersValid)) {
+      // $response = User::insert($usersValid);
+      foreach ($usersValid as $userValid) {
+        $user = User::create($userValid);
+        if ($user['role'] == 'student') {
+            $user->profileStudent()->create([]);
+        } else  $user->profileStaff()->create([]);
+      }
+    }
+    if ($response) {
+      return response()->json(array(
+        'usersValid' => $usersValid,
+        'usersNotValid' => $usersNotValid,
+        'credentialsErrors' => $credentialsErrors
+      ));
+    } else {
+      return response()->json(false);
+    } 
   }
 
 	public function getTeachers( Request $request ) {

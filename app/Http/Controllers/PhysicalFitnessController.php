@@ -47,9 +47,7 @@ class PhysicalFitnessController extends Controller
 
 		$gender = $user->profile->gender;
 
-		$birthday = $request->age || $user->profile->birthday;
-
-    $age = self::calculateAge($birthday);
+		$age = $request->age || self::calculateAge($user->profile->birthday);
 
     $data = $request->toArray();
 

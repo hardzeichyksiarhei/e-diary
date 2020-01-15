@@ -9,18 +9,25 @@
         <div class="modal-body">
           <form @keydown="form.onKeydown($event)" @change="form.onKeydown($event)">
             <div class="form-row">
-                <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12">
                   <div class="form-group" :class="{ 'has-error': form.errors.has('first_name') }">
                     <label for="first_name">Имя <b class="text-danger">*</b></label>
                     <input class="form-control" type="text" name="first_name" placeholder="Введите имя" v-model="form.first_name">
                     <has-error :form="form" field="first_name"></has-error>
                   </div>
                 </div>
-                <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="col-md-4 col-sm-12 col-xs-12">
                   <div class="form-group" :class="{ 'has-error': form.errors.has('last_name') }">
                     <label for="last_name">Фамилия <b class="text-danger">*</b></label>
                     <input class="form-control" type="text" name="last_name" placeholder="Введите фамилию" v-model="form.last_name">
                     <has-error :form="form" field="last_name"></has-error>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                  <div class="form-group" :class="{ 'has-error': form.errors.has('patronymic_name') }">
+                    <label for="patronymic_name">Отчество</label>
+                    <input class="form-control" id="patronymic_name" type="patronymic_name" placeholder="Введите отчество" name="patronymic_name" v-model="form.patronymic_name">
+                    <has-error :form="form" field="patronymic_name"></has-error>
                   </div>
                 </div>
             </div>
@@ -85,6 +92,7 @@ export default {
     form: new Form({
       first_name: '',
       last_name: '',
+      patronymic_name: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -100,7 +108,7 @@ export default {
 
         IziToast.success({
            title: 'Новый пользователь добавлен',
-           message: `<strong>Имя:</strong> ${this.form.first_name} ${this.form.last_name}</br>
+           message: `<strong>Имя:</strong> ${this.form.last_name} ${this.form.first_name}</br>
                      <strong>E-mail:</strong> ${this.form.email}</br>`
         });
       } catch (error) {
