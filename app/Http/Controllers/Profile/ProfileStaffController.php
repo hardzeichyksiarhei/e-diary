@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class ProfileStaffController extends Controller
 {
     public function get( Request $request ) {
-	    return $request->user()->profileStaff;
+	    return $request->user()->profile;
     }
 
     public function update( ProfileStaffRequest $request ) {
@@ -17,10 +17,8 @@ class ProfileStaffController extends Controller
 		$user = $request->user();
 
 		$user
-		    ->profileStaff()
-			->update($request->toArray());
-			
-		$user->hasProfileActive();
+			->profile()
+			->updateOrCreate(array( 'user_id' => $user->id ), $request->toArray());
 
 		return $request->user();
 

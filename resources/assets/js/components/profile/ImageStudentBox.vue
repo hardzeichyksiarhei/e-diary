@@ -22,15 +22,15 @@
         </li>
         <li class="list-group-item">
           <b>Факультет:&nbsp;</b>
-          {{ user.profile.faculty | isEmpty }}
+          {{ user.profile && user.profile.faculty | isEmpty }}
         </li>
         <li class="list-group-item">
           <b>Курс:&nbsp;</b>
-          {{ user.profile.course | isEmpty }}
+          {{ user.profile && user.profile.course | isEmpty }}
         </li>
         <li class="list-group-item border-bottom-0">
           <b>Группа:&nbsp;</b>
-          {{ user.profile.group | isEmpty }}
+          {{ user.profile && user.profile.group | isEmpty }}
         </li>
       </ul>
 

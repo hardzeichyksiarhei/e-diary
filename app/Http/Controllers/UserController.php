@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-  public function addUser( UserRequest $request )
+  public function addUser(UserRequest $request )
   {
     $user = User::create([
       'first_name' => $request['first_name'],
@@ -25,16 +25,7 @@ class UserController extends Controller
       'role' => $request['role']
     ]);
 
-    if ($user['role'] == 'student') {
-        $user->profileStudent()->create([]);
-
-        for ($i = 0; $i <= 6; $i++) {
-            $user->functionalStates()->create(['semester' => $i]);
-            $user->physicalFitnesses()->create(['semester' => $i]);
-        }
-    }
-    else
-        $user->profileStaff()->create([]);
+    return response()->json($user);
   }
 
   public function addUserBulk(Request $request) {
@@ -87,16 +78,15 @@ class UserController extends Controller
       }
     }
 
-    // Гавно
-    $response = true;
+    $response = false;
     if (empty($credentialsErrors) && !empty($usersValid)) {
-      // $response = User::insert($usersValid);
-      foreach ($usersValid as $userValid) {
-        $user = User::create($userValid);
-        if ($user['role'] == 'student') {
-            $user->profileStudent()->create([]);
-        } else  $user->profileStaff()->create([]);
-      }
+      $response = User::insert($usersValid);
+      // foreach ($usersValid as $userValid) {
+      //   $user = User::create($userValid);
+      //   if ($user['role'] == 'student') {
+      //       $user->profileStudent()->create([]);
+      //   } else  $user->profileStaff()->create([]);
+      // }
     }
     if ($response) {
       return response()->json(array(
@@ -142,12 +132,18 @@ class UserController extends Controller
 		$students = DB::table('users as u1')->where([
         ['u1.name', 'like', "%$search->name%"],
 				['u1.role', 'student'],
-        ['faculties.name', 'like', "%$search->faculty%"],
-        ['u2.name', 'like', "%$search->teacher%"],
         ['profile_students.birthday', 'like', "%$search->birthday%"],
         ['profile_students.course', 'like', "%$search->course%"],
         ['profile_students.group', 'like', "%$search->group%"]
       ])
+      ->where(function($q) use ($search) {
+        $q->where('faculties.name', 'like', "%$search->faculty%");
+        if (empty($search->faculty)) $q->orWhereNull('faculties.name');
+      })
+      ->where(function($q) use ($search) {
+        $q->where('u2.name', 'like', "%$search->teacher%");
+        if (empty($search->teacher)) $q->orWhereNull('u2.name');
+      })
 			->leftJoin('profile_students', 'profile_students.user_id', '=', 'u1.id')
 			->leftJoin('faculties', 'profile_students.faculty_id', '=', 'faculties.id')
 			->leftJoin('health_groups', 'profile_students.health_group_id', '=', 'health_groups.id')

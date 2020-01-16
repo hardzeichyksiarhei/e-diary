@@ -7,7 +7,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -56,21 +55,14 @@ class User extends Authenticatable implements JWTSubject
 
 	public function getProfileAttribute()
 	{
-		if ($this->role == 'student')
-			return $this->profileStudent()->first();
-		else
-			return $this->profileStaff()->first();
+		return $this->profile()->first();
 	}
 
 	public function getAgeAttribute()
 	{
-		if ($this->role == 'student')
-			$birthday = $this->profileStudent['birthday'];
+		$birthday = $this->profile['birthday'];
 
-		if ($this->role == 'teacher' || $this->role == 'admin')
-			$birthday = $this->profileStaff['birthday'];
-
-		if ($birthday === '') return '';
+		if (empty($birthday)) return '';
 
 		return self::calculateAge($birthday);
 	}
@@ -117,12 +109,6 @@ class User extends Authenticatable implements JWTSubject
 		return [];
 	}
 
-	public function hasProfileActive()
-	{
-		if (!$this->has_profile) $this->has_profile = 1;
-		$this->save();
-	}
-
 
 	public static function boot()
 	{
@@ -139,14 +125,12 @@ class User extends Authenticatable implements JWTSubject
 	/**
 	 * Relationships
 	 */
-	public function profileStudent()
+	public function profile()
 	{
-		return $this->hasOne('App\ProfileStudent');
-	}
-
-	public function profileStaff()
-	{
-		return $this->hasOne('App\ProfileStaff');
+		if ($this->role == 'student')
+			return $this->hasOne('App\ProfileStudent');
+		else 
+			return $this->hasOne('App\ProfileStaff');
 	}
 
 	public function functionalStates()

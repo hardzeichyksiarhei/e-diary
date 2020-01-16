@@ -84,9 +84,11 @@ export default {
       try {
         // Fill the form with profileStaff data.
         const { data } = await axios.get('/api/profile/staff')
-        this.form.keys().forEach(key => {
+        if (data) {
+          this.form.keys().forEach(key => {
             this.form[key] = data[key]
-        })
+          })
+        }
       } catch (error) {
         console.error(error);
       }

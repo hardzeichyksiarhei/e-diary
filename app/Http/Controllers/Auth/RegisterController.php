@@ -70,12 +70,12 @@ class RegisterController extends Controller
             'role' => $data['role']
         ]);
 
-        if ($user['role'] == 'student') {
-            $user->profileStudent()->create([]);
-        }
-        else
-            $user->profileStaff()->create([]);
+        // if ($user['role'] == 'student') {
+        //     $user->profileStudent()->create([]);
+        // }
+        // else
+        //     $user->profileStaff()->create([]);
 
-        return $user;
+        return response()->json($user);
     }
 }

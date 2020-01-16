@@ -5,10 +5,7 @@ import * as types from '../mutation-types'
 
 // state
 export const state = {
-  user: {
-    photo_url: '',
-    role: ''
-  },
+  user: null,
   token: Cookies.get('token')
 }
 
@@ -16,10 +13,7 @@ export const state = {
 export const getters = {
   user: state => state.user,
   token: state => state.token,
-  check: state => !_.isEqual(state.user, {
-    photo_url: '',
-    role: ''
-  })
+  check: state => state.user !== null && state.token
 }
 
 // mutations
@@ -39,10 +33,7 @@ export const mutations = {
   },
 
   [types.LOGOUT] (state) {
-    state.user = {
-      photo_url: '',
-      role: ''
-    }
+    state.user = null
     state.token = null
 
     Cookies.remove('token')
@@ -50,10 +41,6 @@ export const mutations = {
 
   [types.UPDATE_USER] (state, data) {
     state.user = data
-  },
-
-  [types.UPDATE_HAS_PROFILE_USER] (state, flag) {
-    state.user.has_profile = flag
   }
 }
 

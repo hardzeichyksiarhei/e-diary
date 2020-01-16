@@ -4,11 +4,11 @@
     <section class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
-        <div class="pull-left image">
+        <div v-if="check" class="pull-left image">
           <img :src="user.photo_url" class="img-circle" alt="User Image" />
         </div>
         <div class="pull-left info">
-          <p>{{ full_name_short }}</p>
+          <p>{{ user | full_name_short }}</p>
           <!-- Status -->
           <a href="#">
             <i class="fa fa-circle text-success"></i> Online
@@ -209,11 +209,14 @@ export default {
   computed: {
     ...mapGetters({
       user: "auth/user",
-      check: "auth/check",
-      // totalNotifications: "messages/totalNotifications"
-    }),
-    full_name_short() {
-      let { first_name, last_name, patronymic_name } = this.user;
+      check: "auth/check"
+    })
+  },
+
+  filters: {
+    full_name_short(user) {
+      if (!user) return '';
+      let { first_name, last_name, patronymic_name } = user;
       let res = last_name + ' ' + first_name;
       if (patronymic_name.length) {
         res = last_name + ' ' + first_name[0] + '. ' + patronymic_name[0] + '.';

@@ -10,7 +10,7 @@ class ProfileStudentController extends Controller
 {
 
 	public function get( Request $request ) {
-		return $request->user()->profileStudent;
+		return $request->user()->profile;
 	}
 
 	public function update( ProfileStudentRequest $request ) {
@@ -18,16 +18,14 @@ class ProfileStudentController extends Controller
 		$user = $request->user();
 
 		$user
-			->profileStudent()
-			->update($request->except('disease_group_ids'));
+			->profile()
+			->updateOrCreate(array( 'user_id' => $user->id ), $request->except('disease_group_ids'));
 
-		$profileStudentData = $request->user()->profileStudent;
+		$profile = $request->user()->profile;
 
-		$profileStudentData
+		$profile
 			->diseaseGroups()
 		->sync($request['disease_group_ids']);
-
-		$user->hasProfileActive();
 
 		return $request->user();
 

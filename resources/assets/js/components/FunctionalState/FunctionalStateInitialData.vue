@@ -26,18 +26,18 @@
         </li>
       </ul>
       <div class="tab-content">
-        <form @keydown="form.onKeydown($event)" @change="form.onKeydown($event)">
-          <div class="form-row">
-            <div class="col-md-12">
-              <div v-if="check && !user.has_profile" class="alert alert-warning mb-0" role="alert">
-                Для продолжения, заполните дополнительную информацию о себе.
-                <router-link
-                  class="text-uppercase"
-                  :to="{ name: 'profile' }"
-                >Перейти к редактировать</router-link>
-              </div>
+        <div class="row" v-if="check && !user.profile">
+          <div class="col-md-12">
+            <div class="alert alert-warning mb-0" role="alert">
+              Для продолжения, заполните дополнительную информацию о себе.
+              <router-link
+                class="text-uppercase"
+                :to="{ name: 'profile' }"
+              >Перейти к редактировать</router-link>
             </div>
           </div>
+        </div>
+        <form v-else @keydown="form.onKeydown($event)" @change="form.onKeydown($event)">
           <h4 class="border-bottom pb-3">Соматометрические:</h4>
           <div class="form-row d-flex align-items-end">
             <div class="col-md-6 col-xs-12 mb-3">
@@ -176,29 +176,17 @@
               <has-error :form="form" field="chss_restoring"></has-error>
             </div>
           </div>
-          <div class="form-row">
-            <div class="col-md-12">
-              <div v-if="check && !user.has_profile" class="alert alert-warning mb-0" role="alert">
-                Для продолжения, заполните дополнительную информацию о себе.
-                <router-link
-                  class="text-uppercase"
-                  :to="{ name: 'profile' }"
-                >Перейти к редактировать</router-link>
-              </div>
-            </div>
-          </div>
         </form>
       </div>
-      <div class="box-footer">
+      <div class="box-footer" v-if="check && user.profile">
         <v-button
-          v-if="check && user.has_profile"
           class="btn-sm text-uppercase mr-3"
           type="primary"
           nativeType="button"
           :loading="form.busy"
           @click="updateInitialData"
         >Обновить</v-button>
-        <small>Последнее обновление: {{ updated_at }}</small>
+        <small v-if="updated_at">Последнее обновление: {{ updated_at }}</small>
       </div>
     </div>
   </div>

@@ -132,6 +132,10 @@ export default {
 
   name: "BulkAdd",
 
+  metaInfo () {
+    return { title: 'Массовое добавление' }
+  },
+
   data: () => ({
     reg_data: "",
     form: new Form({

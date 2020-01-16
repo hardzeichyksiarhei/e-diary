@@ -21,14 +21,6 @@
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        <!-- <div class="dev-notification">
-          <h3 class="dev-notification__title">Что нового?</h3>
-          <ul class="dev-notification-list">
-            <li class="dev-notification-item">Обмен сообщениями</li>
-            <li class="dev-notification-item">Нововведение 2</li>
-            <li class="dev-notification-item">Нововведение 3</li>
-          </ul>
-        </div> -->
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
@@ -59,17 +51,11 @@
           Anything you want
         </div> -->
         <!-- Default to the left -->
-        &copy; {{ new Date().getFullYear() }} Все права защищены | E-Diary (beta v.1.3.0) разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a>
+        &copy; {{ new Date().getFullYear() }} Все права защищены | E-Diary (beta v.1.4.0) разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a>
       </footer>
 
       <!-- Control Sidebar -->
-      <control-sidebar/>
-
-      <div class="contral-btn-set" v-if="user.role == 'admin'">
-        <button type="button" class="btn-fab btn-fab--red" data-toggle="modal" data-target="#add-user">
-          <i class="fa fa-user-plus" aria-hidden="true"></i>
-        </button>
-      </div>
+      <control-sidebar/>      
 
     </div>
     <!-- ./wrapper -->
@@ -90,7 +76,8 @@
         </div>
       </div>
     </div>
-    <add-user-popup v-if="user.role == 'admin'"/>
+
+    <add-user-popup v-if="check && user.role == 'admin'"/>
   </div>
 </template>
 
@@ -117,7 +104,8 @@ export default {
   },
 
   computed: mapGetters({
-    user: 'auth/user'
+    user: 'auth/user',
+    check: 'auth/check'
   }),
 
   components: {

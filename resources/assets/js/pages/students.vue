@@ -117,8 +117,8 @@
                                 <td>{{ student.birthday }}</td>
                                 <td>{{ student.course }}</td>
                                 <td>{{ student.group }}</td>
-                                <td>{{ student.faculty_name }}</td>
-                                <td>{{ student.teacher_name }}</td>
+                                <td>{{ student.faculty_name || '–' }}</td>
+                                <td>{{ student.teacher_name || '–' }}</td>
                                 <td class="options">
                                   <div class="btn-group">
                                     <button class="btn btn-sm btn-success user-profile-btn w-50"

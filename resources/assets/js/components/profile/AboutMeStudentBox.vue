@@ -8,19 +8,19 @@
 
             <strong><i class="fa fa-university margin-r-5"></i> Преподаватель</strong>
 
-            <p class="text-muted">{{ user.profile.teacher | isEmpty }}</p>
+            <p class="text-muted">{{ user.profile && user.profile.teacher | isEmpty }}</p>
 
             <hr>
 
             <strong><i class="fa fa-mortar-board margin-r-5"></i> Медицинская группа здоровья</strong>
 
-            <p class="text-muted">{{ user.profile.health_group | isEmpty }}</p>
+            <p class="text-muted">{{ user.profile && user.profile.health_group | isEmpty }}</p>
 
             <hr>
 
             <strong><i class="fa fa-pencil margin-r-5"></i> Заболевание</strong>
 
-            <p>{{ user.profile.disease | isEmpty }}</p>
+            <p>{{ user.profile && user.profile.disease | isEmpty }}</p>
         </div>
         <!-- /.box-body -->
     </div>

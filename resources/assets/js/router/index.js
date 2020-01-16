@@ -9,7 +9,7 @@ Vue.use(Meta)
 Vue.use(Router)
 
 // The middleware for every page of the application.
-const globalMiddleware = ['check-auth', 'messages-notifications']
+const globalMiddleware = ['check-auth']
 
 // Load middleware modules dynamically.
 const routeMiddleware = resolveMiddleware(

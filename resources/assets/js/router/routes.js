@@ -40,7 +40,8 @@ const AdminDiseaseGroups = () => import('~/pages/admin/diseaseGroups')
 const AdminBulkAdd = () => import('~/pages/admin/bulkAdd')
 
 export default [
-  { path: '/', name: 'welcome', component: Welcome },
+  // { path: '/', name: 'welcome', component: Welcome },
+  { path: '/', name: 'welcome', redirect: { name: 'dashboard' } },
 
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
@@ -76,7 +77,7 @@ export default [
     { path: 'students', name: 'admin.students', component: Students, meta: { breadcrumb: 'Студенты' }},
     { path: 'faculties', name: 'admin.faculties', component: AdminFaculties, meta: { breadcrumb: 'Факультеты' }},
     { path: 'health-groups', name: 'admin.health-groups', component: AdminHealthGroups, meta: { breadcrumb: 'Мед. группы здоровья' }},
-    { path: 'disease_groups', name: 'admin.disease-groups', component: AdminDiseaseGroups, meta: { breadcrumb: 'Группы заболевания' }},
+    { path: 'disease-groups', name: 'admin.disease-groups', component: AdminDiseaseGroups, meta: { breadcrumb: 'Группы заболевания' }},
     { path: 'bulk-add', name: 'admin.bulk-add', component: AdminBulkAdd, meta: { breadcrumb: 'Массовое добавление' }},
   ] },
   { path: '/files', name: 'files', component: Files, meta: { breadcrumb: 'Файлы' }},

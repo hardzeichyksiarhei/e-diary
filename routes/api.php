@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth:api'], function () {
   Route::post('/user', 'UserController@addUser');
   Route::post('/user/bulk', 'UserController@addUserBulk');
   Route::get('/user', function (Request $request) {
-    return $request->user();
+    return response()->json($request->user());
   });
   Route::get('/user/{id}', function (Request $request, $id) {
     return \App\User::find($id);

@@ -58,22 +58,28 @@ class UserSeeder extends Seeder
 				'role' => 'student'
 			];
 
-			User::create($admin1)->profileStaff()->create([]);
-			User::create($admin2)->profileStaff()->create([]);
+			User::create($admin1);
+			User::create($admin2);
+			User::create($teacher1);
+			User::create($teacher2);
+			User::create($student);
 
-			User::create($teacher1)->profileStaff()->create([]);
-			User::create($teacher2)->profileStaff()->create([]);
+			// User::create($admin1)->profileStaff()->create([]);
+			// User::create($admin2)->profileStaff()->create([]);
+
+			// User::create($teacher1)->profileStaff()->create([]);
+			// User::create($teacher2)->profileStaff()->create([]);
 			
-			User::create($student)->profileStudent()->create([]);
+			// User::create($student)->profileStudent()->create([]);
 
 			/*factory(App\User::class, 200)->create()->each(function ($u) {
 				if ($u['role'] == 'student') {
 					$u->profileStudent()->save(factory(App\ProfileStudent::class)->make());
 				}
 				else
-          $u->profileStaff()->save(factory(App\ProfileStaff::class)->make());
+          			$u->profileStaff()->save(factory(App\ProfileStaff::class)->make());
           
-        $u->files()->save(factory(App\File::class)->make());
+				$u->files()->save(factory(App\File::class)->make());
 			});*/
     }
 }
