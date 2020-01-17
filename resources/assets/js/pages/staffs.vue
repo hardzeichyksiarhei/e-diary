@@ -7,7 +7,7 @@
                     <h3 class="box-title">Расширенный поиск</h3>
                 </div>
                 <div class="box-body">
-                  <form @submit.prevent="fetchStaffs">
+                  <form @submit.prevent="fetchStaffs()">
                     <div class="form-row">
                       <div class="col-md-4 col-xs-12 mb-3">
                         <label for="name">Ф.И.О.</label>

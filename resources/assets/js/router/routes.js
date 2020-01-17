@@ -53,8 +53,8 @@ export default [
 
   { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { breadcrumb: 'Панель управления' }},
   { path: '/indicators', name: 'indicators', component: Indicators, meta: { breadcrumb: 'Измерения и Показатели' }},
-  { path: '/statistics', component: Statistics, children: [
-    { path: '', name: 'statistics.primary', meta: { breadcrumb: 'Статистическая обработка' }, component: StatisticsPrimary },
+  { path: '/statistics', component: Statistics, meta: { breadcrumb: 'Статистическая обработка' }, children: [
+    { path: '', name: 'statistics.primary', meta: { title: 'Статистика' }, component: StatisticsPrimary },
     { path: 'functional-state', name: 'statistics.functional-state', component: StatisticsFunctionalState, meta: { breadcrumb: 'Функциональное развитие и состояние (ФР и ФС)' }},
     { path: 'physical-fitness', name: 'statistics.physical-fitness', component: StatisticsPhysicalFitness, meta: { breadcrumb: 'Физическая подготовленность (ФП)' }},
     { path: 'common-assessment', name: 'statistics.common-assessment', component: StatisticsCommonAssessment, meta: { breadcrumb: 'Общая оценка и уровень ФР, ФС и ФП' }}
@@ -71,7 +71,7 @@ export default [
   { path: '/profile', name: 'profile', component: Profile, meta: { breadcrumb: 'Профайл' }},
   { path: '/profile/staff/:id', name: 'profile.staff', component: ProfileStaff },
   { path: '/profile/student/:id', name: 'profile.student', component: ProfileStudent, meta: { breadcrumb: 'Просмотр профайла' }},
-  { path: '/admin', component: Admin, children: [
+  { path: '/admin', component: Admin, meta: { breadcrumb: 'Панель админинистратора' }, children: [
     { path: '', name: 'admin.primary', component: AdminPrimary, meta: { title: 'Панель админинистратора' }},
     { path: 'staffs', name: 'admin.staffs', component: Staffs, meta: { breadcrumb: 'Сотрудники' }},
     { path: 'students', name: 'admin.students', component: Students, meta: { breadcrumb: 'Студенты' }},

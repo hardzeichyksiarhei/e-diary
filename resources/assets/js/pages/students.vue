@@ -7,7 +7,7 @@
                     <h3 class="box-title">Расширенный поиск</h3>
                 </div>
                 <div class="box-body">
-                    <form @submit.prevent="fetchStudents">
+                    <form @submit.prevent="fetchStudents()">
                         <div class="form-row">
                           <div class="col-md-4 col-xs-12 mb-3">
                             <label for="name">Имя</label>
@@ -219,7 +219,6 @@ export default {
 			if (!value && this.selectStudentsID.length === this.listStudents.data.length) this.selectStudentsID = []
 		},
 		selectStudentsID (newValue, oldValue) {
-      console.log(newValue);
 			if (newValue.length > 0 && newValue.length < this.listStudents.data.length ) this.selectAll = false
 			if (newValue.length && newValue.length === this.listStudents.data.length) this.selectAll = true
 		}

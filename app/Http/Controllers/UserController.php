@@ -78,15 +78,9 @@ class UserController extends Controller
       }
     }
 
-    $response = false;
+    $response = true;
     if (empty($credentialsErrors) && !empty($usersValid)) {
       $response = User::insert($usersValid);
-      // foreach ($usersValid as $userValid) {
-      //   $user = User::create($userValid);
-      //   if ($user['role'] == 'student') {
-      //       $user->profileStudent()->create([]);
-      //   } else  $user->profileStaff()->create([]);
-      // }
     }
     if ($response) {
       return response()->json(array(

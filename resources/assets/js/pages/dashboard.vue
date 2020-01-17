@@ -320,8 +320,7 @@ export default {
   computed: {
     ...mapGetters({
       user: "auth/user",
-      check: "auth/check",
-      totalNotifications: "messages/totalNotifications"
+      check: "auth/check"
     })
   },
 

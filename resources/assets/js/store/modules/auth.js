@@ -13,7 +13,7 @@ export const state = {
 export const getters = {
   user: state => state.user,
   token: state => state.token,
-  check: state => state.user !== null && state.token
+  check: state => state.user !== null
 }
 
 // mutations

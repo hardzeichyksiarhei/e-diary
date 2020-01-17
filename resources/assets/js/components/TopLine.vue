@@ -4,7 +4,7 @@
       <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
     </div>
     <!-- Sidebar toggle button-->
-    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+    <a href="#" class="sidebar-toggle" @click="toggleLeftMenu()" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
     <!-- Navbar Right Menu -->
@@ -61,43 +61,25 @@
 
 <script>
 import { mapGetters } from "vuex";
-import MessagesNotifications from "./MessagesNotifications";
+import { FullName, FullNameShort } from "../mixins/name"
 
 export default {
+  mixins: [ FullName, FullNameShort ],
+  
   data: () => ({
     appName: window.config.appName
   }),
-
-  components: {
-    MessagesNotifications
-  },
 
   computed: {
     ...mapGetters({
       user: "auth/user",
       check: "auth/check",
-      // notifications: 'messages/notifications',
-      loading: "loading/loading"
+      loading: "loading/loading",
+      leftMenuInstance: 'app/leftMenuInstance'
     })
   },
 
   filters: {
-    full_name(user) {
-      if (!user) return '';
-      let { first_name, last_name, patronymic_name } = user;
-      let res = last_name + ' ' + first_name;
-      if (patronymic_name.length) res += ' ' + patronymic_name;
-      return res;
-    },
-    full_name_short(user) {
-      if (!user) return '';
-      let { first_name, last_name, patronymic_name } = user;
-      let res = last_name + ' ' + first_name;
-      if (patronymic_name.length) {
-        res = last_name + ' ' + first_name[0] + '. ' + patronymic_name[0] + '.';
-      }
-      return res;
-    },
     transRole(value) {
       if (value === "teacher") return "Преподаватель";
       if (value === "student") return "Студент";
@@ -106,6 +88,9 @@ export default {
   },
 
   methods: {
+    toggleLeftMenu() {
+      this.leftMenuInstance.toggle();
+    },
     async logout() {
       // Log out the user.
       await this.$store.dispatch("auth/logout");

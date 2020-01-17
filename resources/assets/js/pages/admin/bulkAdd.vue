@@ -107,8 +107,8 @@
                         :key="user.position"
                       >
                         <p>Ошибки в <b>#{{ user.position }}</b> строке</p>
-                        <template v-for="field in user.errors">
-                          <p v-for="(error, key) in field" :key="key">- {{ error }}</p>
+                        <template v-for="(field, field_key) in user.errors">
+                          <p v-for="(error, error_key) in field" :key="`${field_key}_${error_key}`">- {{ error }}</p>
                         </template>
                       </li>
                     </ul>

@@ -215,7 +215,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { Storage } from "../mixins/storage"
+
 export default {
+  mixins: [ Storage ],
+
   name: 'control-sidebar',
 
   data () {
@@ -235,6 +240,12 @@ export default {
         'skin-green-light'
       ]
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      leftMenuInstance: 'app/leftMenuInstance'
+    })
   },
 
   mounted () {
@@ -395,22 +406,6 @@ export default {
   },
 
   methods: {
-    get (name) {
-      if (typeof (Storage) !== 'undefined') {
-        return window.localStorage.getItem(name)
-      } else {
-        window.alert('Please use a modern browser to properly view this template!')
-      }
-    },
-
-    store (name, val) {
-      if (typeof (Storage) !== 'undefined') {
-        window.localStorage.setItem(name, val)
-      } else {
-        window.alert('Please use a modern browser to properly view this template!')
-      }
-    },
-
     changeSkin (cls) {
       const body = document.body
       for (const skin of this.mySkins) {
@@ -418,33 +413,33 @@ export default {
       }
 
       body.classList.add(cls)
-      this.store('skin', cls)
+      this.storageSave('skin', cls)
       return false
     },
 
     changeTopLineFixed (e) {
       document.body.classList.toggle('top-line-fixed')
       if (e.currentTarget.checked) {
-        this.store('top-line-fixed', true)
+        this.storageSave('top-line-fixed', true)
       } else {
-        this.store('top-line-fixed', false)
+        this.storageSave('top-line-fixed', false)
       }
     },
 
     changeSideBarCollapse (e) {
-      document.body.classList.toggle('sidebar-collapse')
+      this.leftMenuInstance.toggle();
       if (e.currentTarget.checked) {
-        this.store('sidebar-collapsed', true)
+        this.storageSave('sidebar-collapsed', true)
       } else {
-        this.store('sidebar-collapsed', false)
+        this.storageSave('sidebar-collapsed', false)
       }
     },
 
     setup () {
       const body = document.body
-      const skin = this.get('skin')
-      const topLineFixed = this.get('top-line-fixed')
-      const sideBarCollapsed = this.get('sidebar-collapsed')
+      const skin = this.storageGet('skin')
+      const topLineFixed = this.storageGet('top-line-fixed')
+      const sideBarCollapsed = this.storageGet('sidebar-collapsed')
 
       if (skin && $.inArray(skin, this.mySkins)) this.changeSkin(skin)
 
@@ -454,7 +449,6 @@ export default {
       }
 
       if (sideBarCollapsed === 'true') {
-        body.classList.add('sidebar-collapse')
         document.getElementById('sideBarCollapseChange').checked = true
       }
     }

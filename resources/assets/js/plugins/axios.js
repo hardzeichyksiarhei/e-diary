@@ -15,6 +15,7 @@ axios.interceptors.request.use(request => {
   return request
 })
 
+
 // Response interceptor
 axios.interceptors.response.use(response => response, error => {
   const { status } = error.response
@@ -30,12 +31,9 @@ axios.interceptors.response.use(response => response, error => {
 
   if (status === 401 && store.getters['auth/check']) {
     IziToast.warning({
-      id: '401',
       title: 'Сессия завершена!',
-      message: 'Повторите попытку, чтобы продолжить.'
-    })
-    document.addEventListener('iziToast-close', async (data) => {
-      if (data.settings.class === '401') {
+      message: 'Повторите попытку, чтобы продолжить.',
+      async onClosing() {
         await store.dispatch('auth/logout')
 
         router.push({ name: 'login' })

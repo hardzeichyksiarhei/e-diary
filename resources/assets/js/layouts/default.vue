@@ -164,7 +164,7 @@ export default {
         this.fix();
         this.fixSidebar();
 
-        $("body").removeClass(ClassName.holdTransition);
+        //$("body").removeClass(ClassName.holdTransition);
 
         if (this.options.resetHeight) {
           $("body, html, " + Selector.wrapper).css({
