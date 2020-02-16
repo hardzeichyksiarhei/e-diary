@@ -76,6 +76,6 @@ class RegisterController extends Controller
         // else
         //     $user->profileStaff()->create([]);
 
-        return response()->json($user);
+        return $user;
     }
 }

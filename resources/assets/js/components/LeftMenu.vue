@@ -25,7 +25,7 @@
           </a>
         </router-link>
         <template v-if="check && user.role === 'teacher'">
-          <li class="header">TEACHER</li>
+          <li class="header">Преподаватель</li>
           <router-link
             tag="li"
             title="Cтуденты"

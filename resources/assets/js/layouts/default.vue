@@ -8,9 +8,9 @@
         <!-- Logo -->
         <router-link :to="{ name: 'dashboard' }" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>Д</b>З</span>
+          <span class="logo-mini"><b>E</b>D</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{{ appName }}</span>
+          <span class="logo-lg">{{ appName }} <small>(beta)</small></span>
         </router-link>
 
         <!-- Header Navbar -->
@@ -51,7 +51,7 @@
           Anything you want
         </div> -->
         <!-- Default to the left -->
-        &copy; {{ new Date().getFullYear() }} Все права защищены | E-Diary (beta v.1.4.0) разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a>
+        &copy; {{ new Date().getFullYear() }}, БГПУ им. М. Танка | E-Diary (beta v.1.4.2) разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> / Материалы предоставлены факультетом <a href="https://ffv.bspu.by/" target="_blank">«Физического воспитания»</a>
       </footer>
 
       <!-- Control Sidebar -->
