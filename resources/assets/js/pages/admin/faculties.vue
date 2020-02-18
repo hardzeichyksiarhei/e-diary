@@ -145,7 +145,7 @@ export default {
         const newFaculty = this.faculties.find(value => value.id === id);
         await axios.patch(`/api/faculty/${id}`, { name: newFaculty.name });
 
-        IziToast.success({ message: "Факультет обнавлен!" });
+        IziToast.success({ message: "Факультет обновлен!" });
 
         this.errors[id] = [];
       } catch (e) {

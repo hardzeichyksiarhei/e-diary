@@ -81,7 +81,7 @@
                             })">{{ staff | full_name_short }}</a></td>
                             <td>{{ staff.email }}</td>
                             <td>{{ staff.role == 'admin' ? 'Администратор' : 'Преподаватель' }}</td>
-                            <td>{{ staff.profile.position || 'Не указано' }}</td>
+                            <td>{{ staff.profile && staff.profile.position || 'Не указано' }}</td>
                             <td>{{ staff.created_at }}</td>
                             <td class="options">
                               <div class="btn-group">
@@ -182,7 +182,6 @@
         if (!value && this.selectStaffsID.length === this.listStaffs.data.length) this.selectStaffsID = []
       },
       selectStaffsID (newValue, oldValue) {
-        console.log(newValue);
         if (newValue.length > 0 && newValue.length < this.listStaffs.data.length ) this.selectAll = false
         if (newValue.length && newValue.length === this.listStaffs.data.length) this.selectAll = true
       }
@@ -200,7 +199,6 @@
         this.notFoundFlag = this.listStaffs.data.length == 0;
         this.allStaffsID = _.map(this.listStaffs.data, 'id');
         if (this.selectAll) this.selectStaffsID = this.allStaffsID;
-        console.log(data);
       },
       clearSearch () {
         this.search = {
