@@ -47,7 +47,7 @@
                   </div>
                   <div class="box-body">
                     <div class="per-page-wrapper">
-                      <a href="javascript:void(0)" 
+                      <a href="javascript:void(0)"
                         :class="{ 'active' : pp == perPage || (perPage == listStaffs.total && pp == -1) }"
                         v-for="pp in perPages" :key="pp" @click.prevent="changePerPage(pp)"
                       >{{ pp != -1 ? pp : 'Все' }}</a>
@@ -69,28 +69,28 @@
                           <tr v-for="staff in listStaffs.data" :key="staff.id">
                             <td class="select-staff">
                               <div class="custom-control custom-checkbox">
-                                <input type="checkbox" :id="`staff-${staff.id}`" class="custom-control-input" 
+                                <input type="checkbox" :id="`staff-${staff.id}`" class="custom-control-input"
                                   :value="staff.id"
                                   v-model="selectStaffsID">
                                 <label :for="`staff-${staff.id}`" class="custom-control-label"></label>
                               </div>
                             </td>
-                            <td><a href="javascript:void(0)" @click.prevent="$router.push({
-                              name: 'profile.staff',
-                              params: { id: staff.id }
-                            })">{{ staff | full_name_short }}</a></td>
+                            <td>
+                              <router-link :to="{
+                                name: 'profile.staff',
+                                params: { id: staff.id }
+                              }" target="_blank">{{ staff | full_name_short }}</router-link>
+                            </td>
                             <td>{{ staff.email }}</td>
                             <td>{{ staff.role == 'admin' ? 'Администратор' : 'Преподаватель' }}</td>
                             <td>{{ staff.profile && staff.profile.position || 'Не указано' }}</td>
                             <td>{{ staff.created_at }}</td>
                             <td class="options">
                               <div class="btn-group">
-                                <button class="btn btn-sm btn-success w-50 user-profile-btn" 
-                                    @click.prevent="$router.push({
-                                      name: 'profile.staff',
-                                      params: { id: staff.id }
-                                    })"
-                                ><i class="fa fa-id-card fa-fw"></i></button>
+                                <router-link class="btn btn-sm btn-success user-profile-btn w-50" :to="{
+                                  name: 'profile.staff',
+                                  params: { id: staff.id }
+                                }" target="_blank"><i class="fa fa-id-card fa-fw"/></router-link>
                                 <button class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStaffs(staff.id)"><i class="fa fa-trash fa-fw"></i></button>
                               </div>
                             </td>
@@ -132,9 +132,9 @@
         notFoundFlag: false,
         notFoundImg: domainURL + '/images/not_found.png',
         perPages: [
-          15, 30, 45, -1
+          20, 40, 60, -1
         ],
-        perPage: 15,
+        perPage: 20,
         listStaffs: {
           data: []
         },
@@ -186,14 +186,14 @@
         if (newValue.length && newValue.length === this.listStaffs.data.length) this.selectAll = true
       }
     },
-    
+
     methods: {
       async fetchStaffs (page = 1) {
-        const { data } = await axios.get('/api/user/staff/paginate?page=' + page, { 
-          params: { 
+        const { data } = await axios.get('/api/user/staff/paginate?page=' + page, {
+          params: {
             search: this.search,
             per_page: this.perPage
-          } 
+          }
         });
         this.listStaffs = data;
         this.notFoundFlag = this.listStaffs.data.length == 0;
@@ -217,7 +217,7 @@
           IziToast.warning({ message: 'Ничего не выбрано' })
           return false;
         }
-        
+
         await axios.delete('/api/user/', { params: { ids } })
 
         this.fetchStaffs();

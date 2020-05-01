@@ -10,7 +10,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>E</b>D</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{{ appName }} <small>(beta)</small></span>
+          <span class="logo-lg">{{ appName }} <small>(beta v.1.5.0)</small></span>
         </router-link>
 
         <!-- Header Navbar -->
@@ -51,11 +51,11 @@
           Anything you want
         </div> -->
         <!-- Default to the left -->
-        &copy; {{ new Date().getFullYear() }}, БГПУ им. М. Танка | E-Diary (beta v.1.4.2) разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> / Материалы предоставлены факультетом <a href="https://ffv.bspu.by/" target="_blank">«Физического воспитания»</a>
+        E-Diary (beta v.1.5.0) | Разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> на основании материалов учебного издания "Дневник здоровья" (контроль физического состояния студентов) / сост. И.В.Григоревич, А.А.Кукель.  - 2-е изд. - Минск: БГПУ, 2019
       </footer>
 
       <!-- Control Sidebar -->
-      <control-sidebar/>      
+      <control-sidebar/>
 
     </div>
     <!-- ./wrapper -->

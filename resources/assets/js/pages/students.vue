@@ -17,11 +17,11 @@
                           </div>
                           <div class="col-md-4 col-xs-12 mb-3">
                             <label for="faculty">Факультет</label>
-                            <select2 class="form-control select2" :options="listFaculties" v-model="search.faculty"></select2>
+                            <select2 class="form-control select2" :options="listFaculties" v-model="search.faculty"/>
                           </div>
                           <div class="col-md-4 col-xs-12 mb-3">
                             <label for="teacher">Преподаватель</label>
-                            <select2 class="form-control select2" :options="listTeachers" v-model="search.teacher"></select2>
+                            <select2 class="form-control select2" :options="listTeachers" v-model="search.teacher"/>
                           </div>
                         </div>
                         <div class="form-row">
@@ -46,9 +46,9 @@
                             >
                           </div>
                         </div>
-                        <v-button class="btn-sm text-uppercase" type="primary"><i class="fa fa-search"></i>&nbsp;&nbsp;Поиск</v-button>
+                        <v-button class="btn-sm text-uppercase" type="primary"><i class="fa fa-search"/>&nbsp;&nbsp;Поиск</v-button>
                         <button type="button" class="btn btn-success btn-sm text-uppercase" @click.prevent="clearSearch">
-                          <i class="fa fa-refresh"></i>&nbsp;&nbsp;Сброс
+                          <i class="fa fa-refresh"/>&nbsp;&nbsp;Сброс
                         </button>
                     </form>
                 </div>
@@ -81,8 +81,8 @@
                   </div>
                   <div class="box-body">
                       <div class="per-page-wrapper">
-                        <a href="javascript:void(0)" 
-                          :class="{ 'active' : pp == perPage || (perPage == listStudents.total && pp == -1) }"
+                        <a href="javascript:void(0)"
+                          :class="{ 'active' : pp === perPage || (perPage === listStudents.total && pp === -1) }"
                           v-for="pp in perPages" :key="pp" @click.prevent="changePerPage(pp)"
                         >{{ pp != -1 ? pp : 'Все' }}</a>
                       </div>
@@ -104,16 +104,18 @@
                               <tr v-for="student in listStudents.data" :key="student.id">
                                 <td class="select-student">
                                   <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" :id="`student-${student.id}`" class="custom-control-input" 
+                                    <input type="checkbox" :id="`student-${student.id}`" class="custom-control-input"
                                       :value="student.id"
                                       v-model="selectStudentsID">
-                                    <label :for="`student-${student.id}`" class="custom-control-label"></label>
+                                    <label :for="`student-${student.id}`" class="custom-control-label"/>
                                   </div>
                                 </td>
-                                <td><a href="javascript:void(0)" @click.prevent="$router.push({
-                                  name: 'profile.student',
-                                  params: { id: student.id }
-                                })">{{ student.name }}</a></td>
+                                <td>
+                                  <router-link :to="{
+                                    name: 'profile.student',
+                                    params: { id: student.id }
+                                  }" target="_blank">{{ student.name }}</router-link>
+                                </td>
                                 <td>{{ student.birthday }}</td>
                                 <td>{{ student.course }}</td>
                                 <td>{{ student.group }}</td>
@@ -121,12 +123,10 @@
                                 <td>{{ student.teacher_name || '–' }}</td>
                                 <td class="options">
                                   <div class="btn-group">
-                                    <button class="btn btn-sm btn-success user-profile-btn w-50"
-                                        @click.prevent="$router.push({
-                                          name: 'profile.student',
-                                          params: { id: student.id }
-                                        })"
-                                    ><i class="fa fa-id-card fa-fw"></i></button>
+                                    <router-link class="btn btn-sm btn-success user-profile-btn w-50" :to="{
+                                      name: 'profile.student',
+                                      params: { id: student.id }
+                                    }" target="_blank"><i class="fa fa-id-card fa-fw"/></router-link>
                                     <button class="btn btn-sm btn-danger w-50 user-delete-btn" @click.prevent="deleteStudents(student.id)"><i class="fa fa-trash fa-fw"></i></button>
                                   </div>
                                 </td>
@@ -135,8 +135,8 @@
                         </table>
                       </div>
                       <pagination :data="listStudents" :limit="3" @pagination-change-page="fetchStudents" :show-disabled="true">
-                        <span slot="prev-nav"><i class="fa fa-angle-left"></i></span>
-	                      <span slot="next-nav"><i class="fa fa-angle-right"></i></span>
+                        <span slot="prev-nav"><i class="fa fa-angle-left"/></span>
+	                      <span slot="next-nav"><i class="fa fa-angle-right"/></span>
                       </pagination>
                   </div>
               </div>
@@ -177,9 +177,9 @@ export default {
 			listFaculties: [{ text: 'Все', id: '' }],
       listTeachers: [{ text: 'Все', id: '' }],
       perPages: [
-        15, 30, 45, -1
+        20, 40, 60, -1
       ],
-      perPage: 15,
+      perPage: 20,
       listStudents: {
         data: []
       },
@@ -201,7 +201,7 @@ export default {
     this.fetchInitialData()
     this.fetchStudents();
   },
-  
+
   computed: {
     selectedCount () {
 			if (this.selectStudentsID.length < 5) return `Выбрано ${this.selectStudentsID.length} студента`
@@ -231,13 +231,13 @@ export default {
 					axios.get("/api/faculty"),
 					axios.get("/api/user/teacher")
 				]);
-				
+
 				let newListTeachers = _.map(listTeachers.data, function (obj) {
           obj.text = obj.text || obj.name;
           obj.id = obj.name;
 					return obj;
         });
-        
+
         let newListFaculties = _.map(listFaculties.data, function (obj) {
           obj.text = obj.text || obj.name;
           obj.id = obj.name;
@@ -251,11 +251,11 @@ export default {
       }
     },
     async fetchStudents (page = 1) {
-      const { data } = await axios.get('/api/user/student/paginate?page=' + page, { 
-        params: { 
+      const { data } = await axios.get('/api/user/student/paginate?page=' + page, {
+        params: {
           search: this.search,
           per_page: this.perPage
-        } 
+        }
       });
       this.listStudents = data;
       this.notFoundFlag = this.listStudents.data.length == 0;
@@ -267,15 +267,18 @@ export default {
       // if (ids.length === 0) ids = this.allStudentsID;
 			// await axios.post('/api/export/excel/students', { ids });
 			this.semesterUrlParam = `semester=${semester}&`
-			this.selectUrlParams = (this.selectStudentsID.length ? this.selectStudentsID : this.allStudentsID).map(el => `ids[]=${el}`).join('&') 
+			this.selectUrlParams = (this.selectStudentsID.length ? this.selectStudentsID : this.allStudentsID).map(el => `ids[]=${el}`).join('&')
       window.location.href = `/api/export/excel/students/?${this.semesterUrlParam}${this.selectUrlParams}`
     },
     async deleteStudents(ids) {
-      if (Array.isArray(ids) && ids.length == 0) {
+      const is_empty = confirm('Вы уверены?');
+      if (!is_empty) return;
+
+      if (Array.isArray(ids) && ids.length === 0) {
         IziToast.warning({ message: 'Ничего не выбрано' })
         return false;
       }
-      
+
       await axios.delete('/api/user/', { params: { ids } })
 
       this.fetchStudents();

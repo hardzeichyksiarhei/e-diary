@@ -56,13 +56,19 @@
                         <template v-if="functionalState">
                           <tr v-for="fs in functionalState" :key="fs.id">
                             <td>{{ fs.label }}</td>
-                            <td>{{ fs.semester_0 || '-' }}</td>
-                            <td>{{ fs.semester_1 || '-' }}</td>
-                            <td>{{ fs.semester_2 || '-' }}</td>
-                            <td>{{ fs.semester_3 || '-' }}</td>
-                            <td>{{ fs.semester_4 || '-' }}</td>
-                            <td>{{ fs.semester_5 || '-' }}</td>
-                            <td>{{ fs.semester_6 || '-' }}</td>
+                            <td>{{ fs.semester_0 | isEmpty }}</td>
+                            <td>{{ fs.semester_1 | isEmpty }}</td>
+                            <td>{{ fs.semester_2 | isEmpty }}</td>
+                            <td>{{ fs.semester_3 | isEmpty }}</td>
+                            <td>{{ fs.semester_4 | isEmpty }}</td>
+                            <td>{{ fs.semester_5 | isEmpty }}</td>
+                            <td>{{ fs.semester_6 | isEmpty }}</td>
+                          </tr>
+                          <tr v-if="functionalState">
+                            <td><b>Управление</b></td>
+                            <td v-for="sem in 7">
+                              <button class="btn btn-sm btn-danger w-100" @click.prevent="emptyFS(sem - 1)">Очистить</button>
+                            </td>
                           </tr>
                         </template>
                         <tr v-else>
@@ -151,13 +157,13 @@
                         <template v-if="physicalFitness">
                           <tr v-for="pf in physicalFitness" :key="pf.id">
                             <td>{{ pf.label }}</td>
-                            <td>{{ pf.semester_0 || '-' }}</td>
-                            <td>{{ pf.semester_1 || '-' }}</td>
-                            <td>{{ pf.semester_2 || '-' }}</td>
-                            <td>{{ pf.semester_3 || '-' }}</td>
-                            <td>{{ pf.semester_4 || '-' }}</td>
-                            <td>{{ pf.semester_5 || '-' }}</td>
-                            <td>{{ pf.semester_6 || '-' }}</td>
+                            <td>{{ pf.semester_0 | isEmpty }}</td>
+                            <td>{{ pf.semester_1 | isEmpty }}</td>
+                            <td>{{ pf.semester_2 | isEmpty }}</td>
+                            <td>{{ pf.semester_3 | isEmpty }}</td>
+                            <td>{{ pf.semester_4 | isEmpty }}</td>
+                            <td>{{ pf.semester_5 | isEmpty }}</td>
+                            <td>{{ pf.semester_6 | isEmpty }}</td>
                           </tr>
                         </template>
                         <tr v-else>
@@ -233,13 +239,13 @@
                             <template v-if="commonAssessment">
                               <tr v-for="ca in commonAssessment" :key="ca.id">
                                 <td>{{ ca.label }}</td>
-                                <td>{{ ca.semester_0 || '-' }}</td>
-                                <td>{{ ca.semester_1 || '-' }}</td>
-                                <td>{{ ca.semester_2 || '-' }}</td>
-                                <td>{{ ca.semester_3 || '-' }}</td>
-                                <td>{{ ca.semester_4 || '-' }}</td>
-                                <td>{{ ca.semester_5 || '-' }}</td>
-                                <td>{{ ca.semester_6 || '-' }}</td>
+                                <td>{{ ca.semester_0 | isEmpty }}</td>
+                                <td>{{ ca.semester_1 | isEmpty }}</td>
+                                <td>{{ ca.semester_2 | isEmpty }}</td>
+                                <td>{{ ca.semester_3 | isEmpty }}</td>
+                                <td>{{ ca.semester_4 | isEmpty }}</td>
+                                <td>{{ ca.semester_5 | isEmpty }}</td>
+                                <td>{{ ca.semester_6 | isEmpty }}</td>
                               </tr>
                             </template>
                             <tr v-else>
@@ -333,9 +339,9 @@ export default {
           }
         }
       },
-      functionalState: [],
-      physicalFitness: [],
-      commonAssessment: []
+      functionalState: null,
+      physicalFitness: null,
+      commonAssessment: null
     };
   },
 
@@ -362,7 +368,7 @@ export default {
 
   filters: {
     isEmpty(value) {
-      return value || "Нет данных";
+      return (value === null || value === '') ? '-' : value;
     }
   },
 
@@ -393,6 +399,28 @@ export default {
       );
 
       this.commonAssessment = data;
+    },
+
+    async emptyFS(sem) {
+      const is_empty = confirm('Вы уверены?');
+      if (!is_empty) return;
+
+      let user_id = this.$route.params.id;
+
+      try {
+        const { data, status } = await axios.delete(
+          `/api/functional-state/calculation/${user_id}/${sem}`
+        );
+
+        if (status !== 200) return;
+
+        for (let fsKey in this.functionalState) {
+          if (!this.functionalState.hasOwnProperty(fsKey)) continue;
+          this.functionalState[fsKey]['semester_' + sem] = null;
+        }
+
+        IziToast.success({ message: 'Очищено' })
+      } catch (error) { console.error(error); }
     }
   }
 };

@@ -2,7 +2,7 @@
   <div class="login-page">
     <div class="login-box">
       <div class="login-logo">
-          <a href="../../index2.html" v-html="$options.filters.boldFirstWord(appName)"></a>
+          <a href="/" v-html="$options.filters.boldFirstWord(appName)"/>
       </div>
       <!-- /.login-logo -->
       <div class="login-box-body">
@@ -46,7 +46,6 @@ export default {
 
   data: () => ({
     appName: window.config.appName,
-    status: "",
     form: new Form({
       email: ""
     })
@@ -56,17 +55,17 @@ export default {
     boldFirstWord (value) {
       let words = value.split(' ');
       words[0] = `<b>${words[0]}</b>`;
-      
-      return words.join(' '); 
+
+      return words.join(' ');
     }
   },
 
   methods: {
     async send() {
-      const { data } = await this.form.post("/api/password/email");
-
-      this.status = data.status;
-
+      try {
+        const { data } = await this.form.post("/api/password/email");
+        IziToast.info({ message: data.status })
+      } catch (error) { console.error(error) }
       this.form.reset();
     }
   }

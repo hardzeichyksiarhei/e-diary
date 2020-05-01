@@ -4,25 +4,25 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li :class="{ 'active': activeSemester === 0 }">
-          <a href="#" @click.prevent="getInitialData(0)">Исходные данные</a>
+          <a href="#" @click.prevent="getInitialData(0, $event)">Исходные данные</a>
         </li>
         <li :class="{ 'active': activeSemester === 1 }">
-          <a href="#" @click.prevent="getInitialData(1)">1 семестр</a>
+          <a href="#" @click.prevent="getInitialData(1, $event)">1 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 2 }">
-          <a href="#" @click.prevent="getInitialData(2)">2 семестр</a>
+          <a href="#" @click.prevent="getInitialData(2, $event)">2 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 3 }">
-          <a href="#" @click.prevent="getInitialData(3)">3 семестр</a>
+          <a href="#" @click.prevent="getInitialData(3, $event)">3 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 4 }">
-          <a href="#" @click.prevent="getInitialData(4)">4 семестр</a>
+          <a href="#" @click.prevent="getInitialData(4, $event)">4 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 5 }">
-          <a href="#" @click.prevent="getInitialData(5)">5 семестр</a>
+          <a href="#" @click.prevent="getInitialData(5, $event)">5 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 6 }">
-          <a href="#" @click.prevent="getInitialData(6)">6 семестр</a>
+          <a href="#" @click.prevent="getInitialData(6, $event)">6 семестр</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -180,12 +180,19 @@
       </div>
       <div class="box-footer" v-if="check && user.profile">
         <v-button
-          class="btn-sm text-uppercase mr-3"
+          class="btn-sm text-uppercase mr-1"
           type="primary"
           nativeType="button"
           :loading="form.busy"
           @click="updateInitialData"
         >Обновить</v-button>
+        <v-button
+          class="btn-sm text-uppercase mr-3"
+          type="danger"
+          nativeType="button"
+          :loading="form.busy"
+          @click="destroyInitialData"
+        >Очистить</v-button>
         <small v-if="updated_at">Последнее обновление: {{ updated_at }}</small>
       </div>
     </div>
@@ -199,8 +206,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "functional-state-initial-data",
+  metaInfo() {
+    return { title: 'Измерения и  показатели' };
+  },
   data: () => ({
-    activeSemester: -1,
+    activeSemester: 0,
     form: new Form({
       length_body: "",
       mass_body: "",
@@ -221,11 +231,11 @@ export default {
     })
   },
   created() {
-    this.getInitialData(0);
+    this.getInitialData(this.activeSemester);
   },
   methods: {
-    async getInitialData(semester) {
-      if (this.activeSemester === semester) return false;
+    async getInitialData(semester, event) {
+      if (event && this.activeSemester === semester) return false;
       this.activeSemester = semester;
       try {
         // Fill the form with initialDataMeasurement data.
@@ -238,9 +248,7 @@ export default {
         this.form.keys().forEach(key => {
           this.form[key] = data[key];
         });
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) { console.error(error); }
     },
     async updateInitialData() {
       try {
@@ -252,6 +260,26 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    async destroyInitialData() {
+      const is_empty = confirm('Вы уверены?');
+      if (!is_empty) return;
+
+      let user_id = this.user.id;
+      let sem = this.activeSemester;
+
+      try {
+        const { data, status } = await axios.delete(
+          `/api/functional-state/calculation/${user_id}/${sem}`
+        );
+
+        if (status !== 200) return;
+
+        this.updated_at = '';
+        this.form.keys().forEach(key => { this.form[key] = ''; });
+
+        IziToast.success({ message: 'Очищено' })
+      } catch (error) { console.error(error); }
     }
   }
 };

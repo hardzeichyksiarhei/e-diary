@@ -4,25 +4,25 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li :class="{ 'active': activeSemester === 0 }">
-          <a href="#" @click.prevent="getInitialData(0)">Исходные данные</a>
+          <a href="#" @click.prevent="getInitialData(0, $event)">Исходные данные</a>
         </li>
         <li :class="{ 'active': activeSemester === 1 }">
-          <a href="#" @click.prevent="getInitialData(1)">1 семестр</a>
+          <a href="#" @click.prevent="getInitialData(1, $event)">1 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 2 }">
-          <a href="#" @click.prevent="getInitialData(2)">2 семестр</a>
+          <a href="#" @click.prevent="getInitialData(2, $event)">2 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 3 }">
-          <a href="#" @click.prevent="getInitialData(3)">3 семестр</a>
+          <a href="#" @click.prevent="getInitialData(3, $event)">3 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 4 }">
-          <a href="#" @click.prevent="getInitialData(4)">4 семестр</a>
+          <a href="#" @click.prevent="getInitialData(4, $event)">4 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 5 }">
-          <a href="#" @click.prevent="getInitialData(5)">5 семестр</a>
+          <a href="#" @click.prevent="getInitialData(5, $event)">5 семестр</a>
         </li>
         <li :class="{ 'active': activeSemester === 6 }">
-          <a href="#" @click.prevent="getInitialData(6)">6 семестр</a>
+          <a href="#" @click.prevent="getInitialData(6, $event)">6 семестр</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -137,7 +137,7 @@
                   placeholder="0"
                 />
                 <small class="form-text text-muted">Целое число (количество раз)</small>
-                <has-error :form="form" field="press"></has-error>
+                <has-error :form="form" field="press"/>
               </div>
             </div>
             <div class="col-md-4 col-xs-12 mb-3">
@@ -153,7 +153,7 @@
                   placeholder="0"
                 />
                 <small class="form-text text-muted">Целое число (количество раз)</small>
-                <has-error :form="form" field="push_up"></has-error>
+                <has-error :form="form" field="push_up"/>
               </div>
             </div>
             <div class="col-md-4 col-xs-12 mb-3">
@@ -169,7 +169,7 @@
                   placeholder="0"
                 />
                 <small class="form-text text-muted">Десятичное число (секунды)</small>
-                <has-error :form="form" field="run_short"></has-error>
+                <has-error :form="form" field="run_short"/>
               </div>
             </div>
             <div class="col-md-4 col-xs-12 mb-3">
@@ -185,7 +185,7 @@
                   placeholder="0"
                 />
                 <small class="form-text text-muted">Минуты и секунды</small>
-                <has-error :form="form" field="run_long"></has-error>
+                <has-error :form="form" field="run_long"/>
               </div>
             </div>
             <div class="col-md-4 col-xs-12 mb-3">
@@ -204,7 +204,7 @@
                       @input="form.swimming_m = 0"
                     />
                     <small class="form-text text-muted">Десятичное число (секунды)</small>
-                    <has-error :form="form" field="swimming_50"></has-error>
+                    <has-error :form="form" field="swimming_50"/>
                   </div>
                 </div>
                 <div class="col-md-6 col-xs-12">
@@ -220,7 +220,7 @@
                       @input="form.swimming_s = 0"
                     />
                     <small class="form-text text-muted">Метры (12 и менее, 25, 50)</small>
-                    <has-error :form="form" field="swimming_m"></has-error>
+                    <has-error :form="form" field="swimming_m"/>
                   </div>
                 </div>
               </div>
@@ -230,12 +230,19 @@
       </div>
       <div class="box-footer" v-if="check && user.profile">
         <v-button
-          class="btn-sm text-uppercase mr-3"
+          class="btn-sm text-uppercase mr-1"
           type="primary"
           nativeType="button"
           :loading="form.busy"
           @click="updateInitialData"
         >Обновить</v-button>
+        <v-button
+          class="btn-sm text-uppercase mr-3"
+          type="danger"
+          nativeType="button"
+          :loading="form.busy"
+          @click="destroyInitialData"
+        >Очистить</v-button>
         <small v-if="updated_at">Последнее обновление: {{ updated_at }}</small>
       </div>
     </div>
@@ -251,7 +258,7 @@ export default {
   name: "physical-fitness-initial-data",
 
   data: () => ({
-    activeSemester: -1,
+    activeSemester: 0,
     form: new Form({
       age: "",
       long_jump: "",
@@ -274,11 +281,11 @@ export default {
     })
   },
   created() {
-    this.getInitialData(0);
+    this.getInitialData(this.activeSemester);
   },
   methods: {
-    async getInitialData(semester) {
-      if (this.activeSemester === semester) return false;
+    async getInitialData(semester, event) {
+      if (event && this.activeSemester === semester) return false;
       this.activeSemester = semester;
       try {
         // Fill the form with initialDataMeasurement data.
@@ -306,6 +313,26 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    async destroyInitialData() {
+      const is_empty = confirm('Вы уверены?');
+      if (!is_empty) return;
+
+      let user_id = this.user.id;
+      let sem = this.activeSemester;
+
+      try {
+        const { data, status } = await axios.delete(
+          `/api/physical-fitness/calculation/${user_id}/${sem}`
+        );
+
+        if (status !== 200) return;
+
+        this.updated_at = '';
+        this.form.keys().forEach(key => { this.form[key] = ''; });
+
+        IziToast.success({ message: 'Очищено' })
+      } catch (error) { console.error(error); }
     }
   }
 };

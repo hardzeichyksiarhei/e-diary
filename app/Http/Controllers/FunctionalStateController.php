@@ -135,4 +135,12 @@ class FunctionalStateController extends Controller
     $data = $this->fs->getAssessmentFromChart($id);
     return $data;
   }
+
+  public function destroyСalculationByUserIdAndSemester(Request $request, $userId, $semester)
+  {
+      return FunctionalState::where([
+          ['user_id', '=', $userId],
+          ['semester', '=', $semester]
+      ])->delete();
+  }
 }
