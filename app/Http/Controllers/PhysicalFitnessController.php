@@ -108,15 +108,20 @@ class PhysicalFitnessController extends Controller
         $level = $assessment_level['level'];
         $assessment = $assessment_level['assessment'];
 
-        $user
+        $pf = $user
             ->physicalFitnesses()
-            ->firstOrCreate(['semester' => $semester])
-            ->update($data + [
-                    'count_tests' => $amount_tests,
-                    'sum_scores' => $sum_scores,
-                    'level' => $level,
-                    'assessment' => $assessment
-                ]);
+            ->firstOrCreate(['semester' => $semester]);
+
+        $pf->update($data + [
+            'count_tests' => $amount_tests,
+            'sum_scores' => $sum_scores,
+            'level' => $level,
+            'assessment' => $assessment
+        ]);
+
+        $pf->touch();
+
+        return $pf;
     }
 
     public function getСalculationFromTableByID(Request $request, $id)

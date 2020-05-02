@@ -67,7 +67,7 @@
                           <tr v-if="functionalState">
                             <td><b>Управление</b></td>
                             <td v-for="sem in 7">
-                              <button class="btn btn-sm btn-danger w-100" @click.prevent="emptyFS(sem - 1)">Очистить</button>
+                              <button class="btn btn-sm btn-danger w-100" @click.prevent="emptyFS(sem - 1)" :disabled="!functionalState.updated_at[`semester_${sem - 1}`]">Очистить</button>
                             </td>
                           </tr>
                         </template>
@@ -88,7 +88,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-bar-chart"></i>Показатели ФР и ФС (по кол-ву баллов)
+                        <i class="fa fa-fw fa-bar-chart"/>Показатели ФР и ФС (по кол-ву баллов)
                       </h4>
                     </div>
                     <div class="box-body">
@@ -100,7 +100,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-area-chart"></i>Оценка ФР и ФС
+                        <i class="fa fa-fw fa-area-chart"/>Оценка ФР и ФС
                       </h4>
                     </div>
                     <div class="box-body">
@@ -183,7 +183,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-bar-chart"></i>Показатели ФП (по кол-ву баллов)
+                        <i class="fa fa-fw fa-bar-chart"/>Показатели ФП (по кол-ву баллов)
                       </h4>
                     </div>
                     <div class="box-body">
@@ -195,7 +195,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-area-chart"></i>Оценка ФП
+                        <i class="fa fa-fw fa-area-chart"/>Оценка ФП
                       </h4>
                     </div>
                     <div class="box-body">
@@ -216,7 +216,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-table"></i>Общая оценка ФР, ФС и ФП
+                        <i class="fa fa-fw fa-table"/>Общая оценка ФР, ФС и ФП
                       </h4>
                       <div class="box-tools pull-right d-flex"></div>
                     </div>
@@ -261,7 +261,7 @@
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h4 class="box-title">
-                        <i class="fa fa-fw fa-area-chart"></i>Общая оценка ФР, ФС и ФП
+                        <i class="fa fa-fw fa-area-chart"/>Общая оценка ФР, ФС и ФП
                       </h4>
                     </div>
                     <div class="box-body">
@@ -384,6 +384,8 @@ export default {
         "/api/functional-state/calculation/" + this.$route.params.id
       );
 
+      console.log(data)
+
       this.functionalState = data;
     },
     async fetchPhysicalFitness() {
@@ -425,5 +427,3 @@ export default {
   }
 };
 </script>
-
-<style lang='scss' scoped></style>

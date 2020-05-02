@@ -192,6 +192,7 @@
           nativeType="button"
           :loading="form.busy"
           @click="destroyInitialData"
+          :disabled="!updated_at"
         >Очистить</v-button>
         <small v-if="updated_at">Последнее обновление: {{ updated_at }}</small>
       </div>
@@ -252,11 +253,14 @@ export default {
     },
     async updateInitialData() {
       try {
-        await this.form.patch(
+        const { data, status } = await this.form.patch(
           `/api/functional-state/calculation/${this.activeSemester}`
         );
 
-        IziToast.success({ message: "Информация обновлена" });
+        if (status === 200) {
+          this.updated_at = data.updated_at;
+          IziToast.success({ message: "Информация обновлена" });
+        }
       } catch (error) {
         console.error(error);
       }
