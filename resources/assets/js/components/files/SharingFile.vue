@@ -88,7 +88,6 @@ export default {
           "/api/files/share/" + this.file.id + "/users"
         );
         this.sharingUsers = data;
-        console.log(this.sharingUsers);
       } catch (err) {
         console.error(err);
       }

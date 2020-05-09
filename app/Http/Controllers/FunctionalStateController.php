@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FunctionalState;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,8 +29,14 @@ class FunctionalStateController extends Controller
     {
         $exceptFileds = ['mass_index_value', 'mass_index_point', 'orthostatic_test_value', 'orthostatic_test_point', 'dosed_load_value', 'dosed_load_point'];
 
-        return $request
-            ->user()
+        $userId = $request->query('userId', false);
+        if ($userId) {
+            $user = User::find($userId);
+        } else {
+            $user = $request->user();
+        }
+
+        return $user
             ->functionalStates()
             ->where('semester', $semester)
             ->exclude($exceptFileds)
@@ -38,7 +45,12 @@ class FunctionalStateController extends Controller
 
     public function updateСalculation(Request $request, $semester)
     {
-        $user = $request->user();
+        $userId = $request->query('userId', false);
+        if ($userId) {
+            $user = User::find($userId);
+        } else {
+            $user = $request->user();
+        }
 
         $gender = $user->profile->gender;
 

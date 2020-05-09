@@ -1,6 +1,6 @@
 <template>
   <div class="add-user-popup-wrapper">
-    <div class="contral-btn-set">
+    <div class="control-btn-set">
       <button
         type="button"
         class="btn-fab btn-fab--red"

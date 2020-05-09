@@ -12,5 +12,6 @@ yarn-error.log
 .env
 /public/js
 /public/css
+/public/documents
 /public/mix-manifest.json
 phpunit.dusk.xml

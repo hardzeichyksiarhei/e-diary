@@ -55,10 +55,10 @@
                   <td>
                     <div class="file-name">
                       <img class="document_thumb document_doc" alt="Document doc"
-                        v-if="file.extension == 'doc' || file.extension == 'docx'" 
+                        v-if="file.extension == 'doc' || file.extension == 'docx'"
                         :src="domainURL + '/images/word.png'">
                       <img class="document_thumb document_pdf" alt="Document pdf"
-                        v-if="file.extension == 'pdf'" 
+                        v-if="file.extension == 'pdf'"
                         :src="domainURL + '/images/pdf.png'">
                       <img v-if="file.extension == 'xlsx'" :src="domainURL + '/images/excel.png'" alt="Document excel" class="document_thumb document_excel">
                       <img v-if="file.type === 'image'" :src="domainURL + '/images/image.png'" alt="Document image" class="document_thumb document_image">
@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <sharing-file :file="sharingFile" @cancel-sharing="cancelSharing"></sharing-file>
+    <sharing-file :file="sharingFile" @cancel-sharing="cancelSharing"/>
 
     <modal :modal-id="'remove-file'" :hidden-handler="cancelDeleting">
       <template v-slot:title>Удалить файл</template>

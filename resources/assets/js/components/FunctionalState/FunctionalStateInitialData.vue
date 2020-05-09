@@ -1,6 +1,6 @@
 <template>
   <div class="initial-data-wrapper">
-    <h4 class="mb-3">Физическое развитие и функциональное состояние (ФР и ФС)</h4>
+    <h4 class="mb-3" v-if="showTitle">Физическое развитие и функциональное состояние (ФР и ФС)</h4>
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li :class="{ 'active': activeSemester === 0 }">
@@ -210,6 +210,16 @@ export default {
   metaInfo() {
     return { title: 'Измерения и  показатели' };
   },
+  props: {
+    userId: {
+      type: [String, Number],
+      default: -1
+    },
+    showTitle: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: () => ({
     activeSemester: 0,
     form: new Form({
@@ -232,17 +242,19 @@ export default {
     })
   },
   created() {
+    console.log(this.userId)
     this.getInitialData(this.activeSemester);
   },
   methods: {
     async getInitialData(semester, event) {
       if (event && this.activeSemester === semester) return false;
       this.activeSemester = semester;
+
+      let fetchUrl = `/api/functional-state/initial-data/${semester}`;
+      if (this.userId !== -1) fetchUrl += `?userId=${this.userId}`;
       try {
         // Fill the form with initialDataMeasurement data.
-        const { data } = await axios.get(
-          `/api/functional-state/initial-data/${semester}`
-        );
+        const { data } = await axios.get(fetchUrl);
 
         this.updated_at = data["updated_at"];
 
@@ -252,10 +264,10 @@ export default {
       } catch (error) { console.error(error); }
     },
     async updateInitialData() {
+      let fetchUrl = `/api/functional-state/calculation/${this.activeSemester}`;
+      if (this.userId !== -1) fetchUrl += `?userId=${this.userId}`;
       try {
-        const { data, status } = await this.form.patch(
-          `/api/functional-state/calculation/${this.activeSemester}`
-        );
+        const { data, status } = await this.form.patch(fetchUrl);
 
         if (status === 200) {
           this.updated_at = data.updated_at;
@@ -270,6 +282,7 @@ export default {
       if (!is_empty) return;
 
       let user_id = this.user.id;
+      if (this.userId !== -1) user_id = this.userId;
       let sem = this.activeSemester;
 
       try {
@@ -288,5 +301,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped></style>

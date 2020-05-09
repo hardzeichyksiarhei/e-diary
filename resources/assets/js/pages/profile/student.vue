@@ -33,9 +33,18 @@
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h4 class="box-title">
-                    <i class="fa fa-fw fa-table"></i>Показатели ФР и ФС
+                    <i class="fa fa-fw fa-table"/>Показатели ФР и ФС
                   </h4>
-                  <div class="box-tools pull-right d-flex"></div>
+                  <div class="box-tools pull-right d-flex">
+                    <a
+                      class="btn btn-box-tool text-light-blue"
+                      data-toggle="modal"
+                      data-target="#edit-functional-state"
+                      @click.prevent="prepareToEditFunctionalState"
+                    >
+                      <i class="material-icons">edit</i> <span class="btn-box-tool__text">Изменить</span>
+                    </a>
+                  </div>
                 </div>
                 <div class="box-body">
                   <div class="table-responsive">
@@ -63,12 +72,6 @@
                             <td>{{ fs.semester_4 | isEmpty }}</td>
                             <td>{{ fs.semester_5 | isEmpty }}</td>
                             <td>{{ fs.semester_6 | isEmpty }}</td>
-                          </tr>
-                          <tr v-if="functionalState">
-                            <td><b>Управление</b></td>
-                            <td v-for="sem in 7">
-                              <button class="btn btn-sm btn-danger w-100" @click.prevent="emptyFS(sem - 1)" :disabled="!functionalState.updated_at[`semester_${sem - 1}`]">Очистить</button>
-                            </td>
                           </tr>
                         </template>
                         <tr v-else>
@@ -283,6 +286,8 @@
       <!-- /.col -->
     </div>
     <!-- /.row -->
+
+    <edit-functional-state :user-id="editUserId" @cancel-functional-state="cancelEditFunctionalState"/>
   </div>
 </template>
 
@@ -300,10 +305,16 @@ import CommonAssessmentBarChart from "~/components/BarCharts/CommonAssessmentBar
 import PhysicalFitnessAssessmentBarChart from "~/components/BarCharts/PhysicalFitnessAssessmentBarChart";
 import PhysicalFitnessBarChart from "~/components/BarCharts/PhysicalFitnessBarChart";
 
+import EditFunctionalState from "../../components/teacher/EditFunctionalState";
+
 export default {
   middleware: ["auth", "not-student"],
 
   name: "student",
+
+  metaInfo() {
+    return { title: 'Просмотр профайла' };
+  },
 
   components: {
     ImageStudentBox,
@@ -314,7 +325,9 @@ export default {
     CommonAssessmentBarChart,
 
     PhysicalFitnessAssessmentBarChart,
-    PhysicalFitnessBarChart
+    PhysicalFitnessBarChart,
+
+    EditFunctionalState
   },
 
   data() {
@@ -341,7 +354,9 @@ export default {
       },
       functionalState: null,
       physicalFitness: null,
-      commonAssessment: null
+      commonAssessment: null,
+
+      editUserId: -1
     };
   },
 
@@ -384,8 +399,6 @@ export default {
         "/api/functional-state/calculation/" + this.$route.params.id
       );
 
-      console.log(data)
-
       this.functionalState = data;
     },
     async fetchPhysicalFitness() {
@@ -403,27 +416,20 @@ export default {
       this.commonAssessment = data;
     },
 
-    async emptyFS(sem) {
-      const is_empty = confirm('Вы уверены?');
-      if (!is_empty) return;
+    prepareToEditFunctionalState() {
+      this.editUserId = this.$route.params.id || this.user.id;
+    },
 
-      let user_id = this.$route.params.id;
-
-      try {
-        const { data, status } = await axios.delete(
-          `/api/functional-state/calculation/${user_id}/${sem}`
-        );
-
-        if (status !== 200) return;
-
-        for (let fsKey in this.functionalState) {
-          if (!this.functionalState.hasOwnProperty(fsKey)) continue;
-          this.functionalState[fsKey]['semester_' + sem] = null;
-        }
-
-        IziToast.success({ message: 'Очищено' })
-      } catch (error) { console.error(error); }
+    cancelEditFunctionalState() {
+      this.fetchFunctionalState();
+      this.editUserId = -1;
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  .btn-group {
+    width: 100%;
+  }
+</style>
