@@ -10,7 +10,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>E</b>D</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{{ appName }} <small>(beta v.1.5.0)</small></span>
+          <span class="logo-lg">{{ appName }} <small>({{ appVersion }})</small></span>
         </router-link>
 
         <!-- Header Navbar -->
@@ -51,7 +51,7 @@
           Anything you want
         </div> -->
         <!-- Default to the left -->
-        E-Diary (beta v.1.5.0) | Разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> на основании материалов учебного издания "Дневник здоровья" (контроль физического состояния студентов) / сост. И.В.Григоревич, А.А.Кукель.  - 2-е изд. - Минск: БГПУ, 2019
+        E-Diary ({{ appVersion }}) | Разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> на основании материалов учебного издания "Дневник здоровья" (контроль физического состояния студентов) / сост. И.В.Григоревич, А.А.Кукель.  - 2-е изд. - Минск: БГПУ, 2019
       </footer>
 
       <!-- Control Sidebar -->
@@ -89,12 +89,14 @@ import TopLine from "~/components/TopLine";
 import LeftMenu from "~/components/LeftMenu";
 import ControlSidebar from "~/components/ControlSidebar";
 import AddUserPopup from "~/components/users/AddUserPopup";
+import { version } from "../config";
 
 export default {
   name: "MainLayout",
 
   data: () => ({
-    appName: window.config.appName
+    appName: window.config.appName,
+    appVersion: window.config.appVersion
   }),
 
   metaInfo() {

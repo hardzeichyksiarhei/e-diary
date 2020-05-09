@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-static-top" role="navigation">
     <div class="loading" v-if="loading">
-      <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+      <i class="fa fa-spinner fa-pulse fa-2x fa-fw"/>
     </div>
     <!-- Sidebar toggle button-->
     <a href="#" class="sidebar-toggle" @click="toggleLeftMenu()" role="button">
@@ -65,7 +65,7 @@ import { FullName, FullNameShort } from "../mixins/name"
 
 export default {
   mixins: [ FullName, FullNameShort ],
-  
+
   data: () => ({
     appName: window.config.appName
   }),
