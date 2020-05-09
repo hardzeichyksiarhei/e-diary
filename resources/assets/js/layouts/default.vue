@@ -51,7 +51,9 @@
           Anything you want
         </div> -->
         <!-- Default to the left -->
-        E-Diary ({{ appVersion }}) | Разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a> на основании материалов учебного издания "Дневник здоровья" (контроль физического состояния студентов) / сост. И.В.Григоревич, А.А.Кукель.  - 2-е изд. - Минск: БГПУ, 2019
+        E-Diary ({{ appVersion }}) | Разработал <a href="https://vk.com/id179880969" target="_blank">Гардейчик С.М.</a>
+        <a href="https://github.com/hardzeichyksiarhei" target="_blank"><i class="fa fa-github fa-2w"/></a>
+        на основании материалов учебного издания "Дневник здоровья" (контроль физического состояния студентов) / сост. И.В.Григоревич, А.А.Кукель.  - 2-е изд. - Минск: БГПУ, 2019
       </footer>
 
       <!-- Control Sidebar -->
